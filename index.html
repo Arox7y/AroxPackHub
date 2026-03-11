@@ -541,7 +541,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var
     </div>
     <div style="background:#0a1a0a;border:1px solid #10b98130;border-radius:12px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:var(--ok2);font-family:'DM Mono',monospace;line-height:1.7">
       ✅ <strong>Unbegrenzte Packs</strong> — Lade deine Packs auf Google Drive oder MediaFire hoch und füge den Link hier ein.<br>
-      🖼️ Thumbnail: Bild auf <strong>imgur.com</strong> hochladen → Link kopieren. 📦 Pack: Google Drive Link auf "Jeder mit Link" stellen.
+      🖼️ Thumbnail direkt hochladen (Drag & Drop). 📦 Pack: MediaFire oder Google Drive Link einfügen.
     </div>
     <div class="acard">
       <div class="acard-title">Upload New Item</div>
@@ -559,7 +559,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var
       </div>
       <div style="margin-bottom:14px"><label class="lbl">Description</label><textarea id="u-desc" class="inp" placeholder="Short description..."></textarea></div>
       <div class="fg2" style="margin-bottom:22px">
-        <div><label class="lbl">Thumbnail Link (optional)</label><input type="text" id="u-thumb" class="inp" placeholder="https://i.imgur.com/... oder Google Drive Bild-Link" style="margin-bottom:0"></div>
+        <div><label class="lbl">Thumbnail (optional)</label><div class="dz" id="dz-t" onclick="document.getElementById('fi-t').click()" ondrop="doDrop(event,'t')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')"><div class="dz-ico">🖼️</div><div class="dz-t">Drop or click</div><div class="dz-h">PNG / JPG</div><div class="dz-ok" id="ok-t"></div></div><input type="file" id="fi-t" accept="image/*" style="display:none" onchange="handleFile(this,'t')"></div>
         <div id="zip-field"><label class="lbl">Download Link * (Google Drive / MediaFire)</label><input type="text" id="u-dllink" class="inp" placeholder="https://drive.google.com/... oder mediafire.com/..." style="margin-bottom:0"></div>
       </div>
       <button class="btn btn-ok" style="width:100%;padding:14px;font-size:13px;border-radius:10px;" onclick="uploadItem()">Publish Worldwide →</button>
@@ -797,7 +797,7 @@ function uploadItem(){
   if(!name){toast('err','Name is required.');return;}
   const cat=document.getElementById('u-cat').value;
   const dlLink=document.getElementById('u-dllink')?document.getElementById('u-dllink').value.trim():'';
-  const thumbLink=document.getElementById('u-thumb')?document.getElementById('u-thumb').value.trim():'';
+  
   if(cat!=='tweak'&&!dlLink){toast('err','Download link is required.');return;}
   const priceVal=document.getElementById('u-price').value.trim();
   const item={
@@ -807,7 +807,7 @@ function uploadItem(){
     type: cat!=='tweak'?document.getElementById('u-type').value:'Tweak',
     ver:  document.getElementById('u-ver').value.trim()||'—',
     price: priceVal||'FREE', isFree: !priceVal,
-    thumb: thumbLink||null,
+    thumb: thumbData||null,
     dlLink: dlLink||null,
     createdAt: Date.now()
   };
@@ -818,15 +818,15 @@ function uploadItem(){
 }
 
 function deleteItem(fbKey){
-  if(!confirm('Delete this item? Removes it for everyone worldwide.'))return;
+  if(!confirm('Delete this item?'))return;
   db.ref('items/'+fbKey).remove()
-    .then(()=>toast('ok','Deleted.'))
-    .catch(e=>toast('err','Error: '+e.message));
+    .then(()=>{ toast('ok','✓ Deleted!'); })
+    .catch(e=>toast('err','Delete error: '+e.message));
 }
 
 function resetForm(){
   ['u-name','u-desc','u-ver','u-price'].forEach(id=>document.getElementById(id).value='');
-  var ut=document.getElementById('u-thumb'); if(ut) ut.value='';
+  document.getElementById('ok-t').textContent='';
   var ud=document.getElementById('u-dllink'); if(ud) ud.value='';
   document.getElementById('u-cat').value='pack-free';
   document.getElementById('pack-fields').style.display='grid';
