@@ -540,8 +540,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var
       <button class="logout-btn" onclick="doLogout()">LOGOUT</button>
     </div>
     <div style="background:#0a1a0a;border:1px solid #10b98130;border-radius:12px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:var(--ok2);font-family:'DM Mono',monospace;line-height:1.7">
-      ✅ <strong>Kein Storage nötig</strong> — Dateien werden direkt in Firebase gespeichert und sind weltweit verfügbar.<br>
-      ⚠️ Max. Dateigröße: ~9MB pro Pack (Firebase Free Limit). Thumbnail max. ~1MB empfohlen.
+      ✅ <strong>Unbegrenzte Packs</strong> — Lade deine Packs auf Google Drive oder MediaFire hoch und füge den Link hier ein.<br>
+      🖼️ Thumbnail: Bild auf <strong>imgur.com</strong> hochladen → Link kopieren. 📦 Pack: Google Drive Link auf "Jeder mit Link" stellen.
     </div>
     <div class="acard">
       <div class="acard-title">Upload New Item</div>
@@ -559,8 +559,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var
       </div>
       <div style="margin-bottom:14px"><label class="lbl">Description</label><textarea id="u-desc" class="inp" placeholder="Short description..."></textarea></div>
       <div class="fg2" style="margin-bottom:22px">
-        <div><label class="lbl">Thumbnail (optional)</label><div class="dz" id="dz-t" onclick="document.getElementById('fi-t').click()" ondrop="doDrop(event,'t')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')"><div class="dz-ico">🖼️</div><div class="dz-t">Drop or click</div><div class="dz-h">PNG / JPG</div><div class="dz-ok" id="ok-t"></div></div><input type="file" id="fi-t" accept="image/*" style="display:none" onchange="handleFile(this,'t')"></div>
-        <div id="zip-field"><label class="lbl">Pack File (.zip)</label><div class="dz" id="dz-p" onclick="document.getElementById('fi-p').click()" ondrop="doDrop(event,'p')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')"><div class="dz-ico">📦</div><div class="dz-t">Drop or click</div><div class="dz-h">.zip only</div><div class="dz-ok" id="ok-p"></div></div><input type="file" id="fi-p" accept=".zip" style="display:none" onchange="handleFile(this,'p')"></div>
+        <div><label class="lbl">Thumbnail Link (optional)</label><input type="text" id="u-thumb" class="inp" placeholder="https://i.imgur.com/... oder Google Drive Bild-Link" style="margin-bottom:0"></div>
+        <div id="zip-field"><label class="lbl">Download Link * (Google Drive / MediaFire)</label><input type="text" id="u-dllink" class="inp" placeholder="https://drive.google.com/... oder mediafire.com/..." style="margin-bottom:0"></div>
       </div>
       <button class="btn btn-ok" style="width:100%;padding:14px;font-size:13px;border-radius:10px;" onclick="uploadItem()">Publish Worldwide →</button>
     </div>
@@ -796,12 +796,10 @@ function uploadItem(){
   const name=document.getElementById('u-name').value.trim();
   if(!name){toast('err','Name is required.');return;}
   const cat=document.getElementById('u-cat').value;
-  if(cat!=='tweak'&&!packData){toast('err','Please attach a .zip file.');return;}
+  const dlLink=document.getElementById('u-dllink')?document.getElementById('u-dllink').value.trim():'';
+  const thumbLink=document.getElementById('u-thumb')?document.getElementById('u-thumb').value.trim():'';
+  if(cat!=='tweak'&&!dlLink){toast('err','Download link is required.');return;}
   const priceVal=document.getElementById('u-price').value.trim();
-  // Snapshot der Daten VOR dem Reset
-  const itemThumb = thumbData;
-  const itemFile = packData;
-  const itemFileName = packFileName;
   const item={
     name, cat,
     desc: document.getElementById('u-desc').value.trim()||'No description.',
@@ -809,20 +807,14 @@ function uploadItem(){
     type: cat!=='tweak'?document.getElementById('u-type').value:'Tweak',
     ver:  document.getElementById('u-ver').value.trim()||'—',
     price: priceVal||'FREE', isFree: !priceVal,
-    thumb: itemThumb||null,
-    file:  itemFile||null,
-    fileName: itemFileName||'',
+    thumb: thumbLink||null,
+    dlLink: dlLink||null,
     createdAt: Date.now()
   };
-  // Sofort State zurücksetzen damit neue Datei geladen werden kann
-  thumbData=null; packData=null; packFileName='';
-  toast('ok','Uploading... please wait ⏳');
+  toast('ok','Saving... ⏳');
   db.ref('items').push(item)
     .then(()=>{ resetForm(); toast('ok','✓ "'+name+'" is now live worldwide! 🌍'); })
-    .catch(e=>{
-      if(e.message&&e.message.includes('413')) toast('err','File too large for Firebase free plan (max ~9MB).');
-      else toast('err','Firebase error: '+e.message);
-    });
+    .catch(e=>toast('err','Firebase error: '+e.message));
 }
 
 function deleteItem(fbKey){
@@ -834,14 +826,8 @@ function deleteItem(fbKey){
 
 function resetForm(){
   ['u-name','u-desc','u-ver','u-price'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('ok-t').textContent='';
-  document.getElementById('ok-p').textContent='';
-  // Browser cached file inputs — einziger Fix ist das Element neu erstellen
-  var ft=document.getElementById('fi-t');
-  var fp=document.getElementById('fi-p');
-  if(ft){var nft=ft.cloneNode();nft.value='';ft.parentNode.replaceChild(nft,ft);nft.onchange=function(){handleFile(this,'t');};}
-  if(fp){var nfp=fp.cloneNode();nfp.value='';fp.parentNode.replaceChild(nfp,fp);nfp.onchange=function(){handleFile(this,'p');};}
-  thumbData=null; packData=null; packFileName='';
+  var ut=document.getElementById('u-thumb'); if(ut) ut.value='';
+  var ud=document.getElementById('u-dllink'); if(ud) ud.value='';
   document.getElementById('u-cat').value='pack-free';
   document.getElementById('pack-fields').style.display='grid';
   document.getElementById('zip-field').style.display='block';
@@ -899,12 +885,9 @@ function renderAdminList(){
 // ══ DOWNLOAD ══
 function doDownload(fbKey){
   const item=items.find(x=>x.fbKey===fbKey); if(!item)return;
-  if(!item.file){toast('err','No download file found.');return;}
-  const a=document.createElement('a');
-  a.href=item.file;
-  a.download=item.fileName||item.name.replace(/\s+/g,'_')+'.zip';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  toast('ok','⬇ Downloading '+item.name);
+  if(!item.dlLink){toast('err','No download link found.');return;}
+  window.open(item.dlLink,'_blank');
+  toast('ok','⬇ Opening download for '+item.name);
 }
 
 // ══ MODAL ══
@@ -982,4 +965,3 @@ function toggleFaq(el){ el.classList.toggle('open'); }
 </script>
 </body>
 </html>
-
