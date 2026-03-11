@@ -5,914 +5,945 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arox Pack Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#000000;--s1:#0d0d0d;--s2:#111111;--s3:#181818;
-  --b1:#ffffff08;--b2:#ffffff14;--b3:#ffffff22;
-  --pu:#8b5cf6;--pu2:#a78bfa;--pu3:#c4b5fd;--pud:#8b5cf620;
-  --gr:#71717a;--gr2:#3f3f52;--tx:#f4f4f8;--tx2:#a1a1b5;
-  --ok:#34d399;--err:#f43f5e;--gold:#f59e0b;--gold2:#fbbf24;--goldd:#f59e0b18;
+  --bg:#060608;--s1:#0e0e12;--s2:#13131a;--s3:#1a1a24;
+  --b1:#ffffff07;--b2:#ffffff11;--b3:#ffffff1c;--b4:#ffffff28;
+  --pu:#7c3aed;--pu2:#8b5cf6;--pu3:#a78bfa;--pu4:#c4b5fd;--pug:#7c3aed20;
+  --gr:#6b7280;--gr2:#374151;--tx:#f9fafb;--tx2:#9ca3af;
+  --ok:#10b981;--ok2:#34d399;--err:#ef4444;
+  --gold:#d97706;--gold2:#f59e0b;--gold3:#fbbf24;--goldg:#d9770616;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;}
+body{background:var(--bg);color:var(--tx);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:#7c3aed44;border-radius:2px;}
 
-/* FLOATS */
-.floats{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.float{position:absolute;border-radius:50%;background:conic-gradient(from 180deg,#8b5cf633,#6d28d918,transparent);animation:floatAnim linear infinite;border:1px solid #8b5cf612;}
-.f1{width:80px;height:80px;top:8%;left:3%;animation-duration:18s;}
-.f2{width:50px;height:50px;top:20%;left:88%;animation-duration:22s;animation-delay:-4s;}
-.f3{width:65px;height:65px;top:60%;left:5%;animation-duration:20s;animation-delay:-8s;}
-.f4{width:40px;height:40px;top:75%;left:91%;animation-duration:16s;animation-delay:-2s;}
-.f5{width:100px;height:100px;top:40%;left:91%;animation-duration:25s;animation-delay:-6s;}
-.f6{width:55px;height:55px;top:15%;left:74%;animation-duration:19s;animation-delay:-10s;}
-.cube{position:absolute;border:1px solid #8b5cf620;background:linear-gradient(135deg,#8b5cf60c,transparent);animation:floatAnim linear infinite,spinAnim linear infinite;}
-.c1{width:44px;height:44px;top:30%;left:93%;animation-duration:20s,12s;animation-delay:-5s,-3s;}
-.c2{width:30px;height:30px;top:68%;left:8%;animation-duration:17s,9s;animation-delay:-9s,-1s;}
-@keyframes floatAnim{0%{transform:translateY(0) translateX(0);}25%{transform:translateY(-18px) translateX(7px);}50%{transform:translateY(-7px) translateX(-5px);}75%{transform:translateY(-22px) translateX(4px);}100%{transform:translateY(0) translateX(0);}}
-@keyframes spinAnim{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-.glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0;}
-.g1{width:600px;height:600px;top:-200px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#8b5cf613,transparent 70%);filter:blur(60px);}
-.g2{width:380px;height:380px;bottom:-80px;left:-80px;background:radial-gradient(circle,#6d28d910,transparent 70%);filter:blur(80px);}
-.g3{width:320px;height:320px;bottom:0;right:-60px;background:radial-gradient(circle,#8b5cf60c,transparent 70%);filter:blur(80px);}
+/* CANVAS */
+#bgc{position:fixed;top:0;left:0;z-index:0;pointer-events:none;display:block;}
+
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
 
 /* HEADER */
-header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:center;height:62px;background:#000000b8;backdrop-filter:blur(24px);border-bottom:1px solid var(--b1);}
-.nav-pill{display:flex;align-items:center;gap:2px;background:var(--s1);border:1px solid var(--b2);border-radius:100px;padding:5px 5px 5px 14px;}
-.nav-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--tx);cursor:pointer;margin-right:6px;flex-shrink:0;}
-.nav-logo-dot{width:24px;height:24px;background:var(--pu);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;box-shadow:0 0 14px #8b5cf655;}
-.nav-logo span{color:var(--pu3);}
-.nav-sep{width:1px;height:16px;background:var(--b2);margin:0 6px;flex-shrink:0;}
-.nb{padding:6px 13px;border-radius:100px;font-size:12px;font-weight:500;color:var(--gr);background:transparent;border:none;cursor:pointer;transition:all 0.18s;font-family:'Outfit',sans-serif;white-space:nowrap;}
-.nb:hover{color:var(--tx2);}
-.nb.on{background:var(--pu);color:#fff;font-weight:600;}
-.nb.on-free{background:#05271a;color:var(--ok);font-weight:600;border:1px solid #34d39920;}
-.nb.on-gold{background:var(--goldd);color:var(--gold2);font-weight:600;border:1px solid #f59e0b20;}
+header{position:sticky;top:0;z-index:100;height:72px;background:#060608ec;backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;padding:0 32px;}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-mark{width:33px;height:33px;background:linear-gradient(135deg,var(--pu),#4f46e5);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;box-shadow:0 0 22px #7c3aed44;flex-shrink:0;}
+.nav-name{font-size:17px;font-weight:800;letter-spacing:-.3px;}
+.nav-name span{color:var(--pu3);}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nb{padding:9px 17px;border-radius:8px;font-size:14px;font-weight:600;color:var(--gr);background:transparent;border:none;cursor:pointer;transition:all .15s;font-family:'Syne',sans-serif;white-space:nowrap;}
+.nb:hover{color:var(--tx2);background:var(--b1);}
+.nb.on{background:var(--pug);color:var(--pu3);border:1px solid #8b5cf622;}
+.nb.on-free{background:#05201500;color:var(--ok2);border:1px solid #10b98122;}
+.nb.on-gold{background:var(--goldg);color:var(--gold3);border:1px solid #f59e0b22;}
+.nav-r{display:flex;align-items:center;gap:8px;}
+.nav-dc{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:#5865f218;border:1px solid #5865f230;border-radius:9px;color:#a5b4fc;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:'Syne',sans-serif;}
+.nav-dc:hover{background:#5865f228;border-color:#5865f248;}
+.nav-adm{padding:9px 17px;border-radius:8px;font-size:13px;font-weight:700;color:var(--tx2);background:var(--b1);border:1px solid var(--b2);cursor:pointer;transition:all .18s;font-family:'Syne',sans-serif;}
+.nav-adm:hover{color:var(--tx);border-color:var(--b3);}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:1px solid var(--b2);border-radius:8px;background:var(--s1);}
+.ham span{width:20px;height:2px;background:var(--tx2);border-radius:2px;}
+.mob-menu{display:none;position:fixed;top:72px;left:0;right:0;z-index:99;background:#060608fa;backdrop-filter:blur(20px);border-bottom:1px solid var(--b2);padding:16px;flex-direction:column;gap:6px;}
+.mob-menu.open{display:flex;}
+.mob-btn{padding:13px 18px;border-radius:10px;font-size:15px;font-weight:600;color:var(--tx2);background:var(--s1);border:1px solid var(--b1);cursor:pointer;text-align:left;font-family:'Syne',sans-serif;transition:all .15s;}
+.mob-btn:hover{color:var(--pu3);border-color:#8b5cf630;}
 
 /* PAGES */
-.page{display:none;}
-.page.active{display:block;animation:fadeUp 0.3s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-
-/* LOGIN centered */
-#page-login{display:none;min-height:calc(100vh - 62px);align-items:center;justify-content:center;}
+.page{display:none;position:relative;z-index:2;}
+.page.active{display:block;animation:fadeIn .28s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+#page-login{display:none;min-height:calc(100vh - 72px);align-items:center;justify-content:center;}
 #page-login.active{display:flex;}
 
-/* ── HERO ── */
-.hero{position:relative;z-index:1;text-align:center;padding:90px 24px 70px;max-width:700px;margin:0 auto;}
-.chip{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border:1px solid var(--b3);border-radius:100px;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;color:var(--gr);text-transform:uppercase;margin-bottom:28px;}
-.chip-dot{width:5px;height:5px;background:var(--pu);border-radius:50%;animation:blink 2s infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
-.hero h1{font-size:clamp(46px,7vw,82px);font-weight:900;line-height:0.95;letter-spacing:-2px;margin-bottom:18px;}
-.hero h1 .hl{color:transparent;-webkit-text-stroke:1.5px var(--pu);}
-.hero-sub{font-size:15px;color:var(--gr);line-height:1.7;max-width:380px;margin:0 auto 36px;}
-.hero-btns{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:48px;}
-.btn-hero-p{padding:12px 28px;background:var(--pu);color:#fff;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;font-family:'Outfit',sans-serif;}
-.btn-hero-p:hover{background:var(--pu2);box-shadow:0 8px 32px #8b5cf650;transform:translateY(-1px);}
-.btn-hero-g{padding:12px 28px;background:transparent;border:1px solid var(--b3);color:var(--tx2);border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;text-decoration:none;display:inline-block;}
-.btn-hero-g:hover{border-color:var(--pu);color:var(--pu3);}
-
-/* STAT CARD */
-.hero-stat{display:inline-flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--b2);border-radius:14px;padding:14px 24px;margin-bottom:48px;}
-.stat-icon{width:36px;height:36px;background:var(--s3);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.stat-num{font-size:24px;font-weight:800;letter-spacing:-0.5px;line-height:1;}
-.stat-label{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:1.5px;}
+/* HERO */
+.hero{text-align:center;padding:96px 24px 80px;max-width:720px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--b1);border:1px solid var(--b3);border-radius:100px;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:2.5px;color:var(--gr);text-transform:uppercase;margin-bottom:32px;}
+.bdot{width:6px;height:6px;background:var(--pu3);border-radius:50%;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #a78bfa55;}50%{opacity:.5;box-shadow:0 0 0 7px #a78bfa00;}}
+.hero h1{font-size:clamp(50px,8vw,90px);font-weight:800;line-height:.92;letter-spacing:-3px;margin-bottom:22px;}
+.hero h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--pu3);}
+.hero-sub{font-size:16px;color:var(--tx2);line-height:1.75;max-width:420px;margin:0 auto 40px;font-weight:400;}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:44px;}
+.btn-main{padding:14px 32px;background:var(--pu2);color:#fff;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'Syne',sans-serif;}
+.btn-main:hover{background:var(--pu3);box-shadow:0 8px 32px #7c3aed50;transform:translateY(-2px);}
+.btn-out{padding:14px 32px;background:transparent;border:1px solid var(--b3);color:var(--tx2);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
+.btn-out:hover{border-color:var(--pu3);color:var(--pu4);}
+.hero-stats{display:inline-flex;align-items:stretch;background:var(--s1);border:1px solid var(--b2);border-radius:14px;overflow:hidden;margin-bottom:32px;}
+.hst{padding:20px 22px;text-align:center;min-width:105px;}
+.hst-n{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:5px;}
+.hst-l{font-size:9px;font-family:'DM Mono',monospace;color:var(--gr);letter-spacing:1px;text-transform:uppercase;}
+.hst-sep{width:1px;background:var(--b2);}
 .hero-tags{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
-.htag{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--s1);border:1px solid var(--b2);border-radius:100px;font-size:11px;font-weight:500;color:var(--tx2);}
+.htag{padding:6px 14px;background:var(--s1);border:1px solid var(--b2);border-radius:8px;font-size:11px;font-weight:600;color:var(--tx2);font-family:'DM Mono',monospace;letter-spacing:.5px;}
 
-/* WHY DIFFERENT */
-.why-wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 32px 60px;}
-.sec-center{text-align:center;margin-bottom:48px;}
-.sec-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border:1px solid var(--b2);border-radius:100px;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;color:var(--gr2);text-transform:uppercase;margin-bottom:16px;}
-.sec-h{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-1px;margin-bottom:10px;}
-.sec-p{font-size:14px;color:var(--gr);max-width:380px;margin:0 auto;}
+/* SECTIONS */
+.wrap{max-width:1100px;margin:0 auto;padding:80px 32px;}
+.wrap-sm{max-width:800px;margin:0 auto;padding:80px 32px;}
+.sec-hd{text-align:center;margin-bottom:52px;}
+.sec-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border:1px solid var(--b2);border-radius:100px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:2px;color:var(--gr2);text-transform:uppercase;margin-bottom:14px;}
+.sec-h{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;margin-bottom:10px;}
+.sec-p{font-size:14px;color:var(--gr);max-width:400px;margin:0 auto;line-height:1.7;}
+
+/* TAB HEADER */
+.tab-wrap{max-width:1100px;margin:0 auto;padding:56px 32px 80px;position:relative;z-index:2;}
+.tab-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.tab-hd-l{display:flex;align-items:center;gap:14px;}
+.tab-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.ico-free{background:#05201299;border:1px solid #10b98120;}
+.ico-paid{background:var(--pug);border:1px solid #8b5cf620;}
+.ico-tweaks{background:var(--goldg);border:1px solid #f59e0b20;}
+.tab-lbl{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:3px;text-transform:uppercase;color:var(--gr2);margin-bottom:4px;}
+.tab-nm{font-size:26px;font-weight:800;letter-spacing:-.8px;}
+.nm-free{color:var(--ok2);}.nm-paid{color:var(--pu3);}.nm-tweaks{color:var(--gold3);}
+.cnt-pill{font-size:10px;font-family:'DM Mono',monospace;color:var(--gr2);background:var(--s2);border:1px solid var(--b1);padding:6px 16px;border-radius:100px;}
+
+/* GRID + CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .28s cubic-bezier(.4,0,.2,1);position:relative;}
+.card::before{content:'';position:absolute;inset:0;border-radius:16px;opacity:0;transition:opacity .28s;pointer-events:none;background:radial-gradient(ellipse at 50% -10%,#7c3aed18,transparent 65%);}
+.card:hover::before{opacity:1;}
+.card:hover{transform:translateY(-7px);border-color:#8b5cf650;box-shadow:0 24px 64px #7c3aed18,0 0 0 1px #8b5cf615;}
+.card.gc::before{background:radial-gradient(ellipse at 50% -10%,#d9770618,transparent 65%);}
+.card.gc:hover{border-color:#f59e0b50;box-shadow:0 24px 64px #d9770618,0 0 0 1px #f59e0b15;}
+.card-img{width:100%;aspect-ratio:16/9;background:var(--s2);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.card:hover .card-img img{transform:scale(1.07);}
+.card-ph{font-size:32px;opacity:.08;font-weight:800;font-family:'DM Mono',monospace;color:var(--pu);}
+.card-ph.gp{color:var(--gold);}
+.bt{position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:5px;font-size:8px;font-family:'DM Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;}
+.bt-pvp{background:#7c3aed20;color:var(--pu4);border:1px solid #7c3aed40;}
+.bt-cpvp{background:#4f46e520;color:#a5b4fc;border:1px solid #6366f140;}
+.bt-tw{background:var(--goldg);color:var(--gold3);border:1px solid #f59e0b30;}
+.bp{position:absolute;top:10px;right:10px;padding:3px 9px;border-radius:5px;font-size:8px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.bp-free{background:#051f12;color:var(--ok2);border:1px solid #10b98130;}
+.bp-paid{background:#150d2a;color:var(--pu3);border:1px solid #8b5cf230;}
+.bp-gold{background:#1a1000;color:var(--gold3);border:1px solid #f59e0b30;}
+.card-body{padding:16px 20px 20px;}
+.card-name{font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:5px;}
+.card-desc{font-size:12px;color:var(--gr);line-height:1.6;margin-bottom:10px;}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
+.ctag{font-size:8px;font-family:'DM Mono',monospace;padding:3px 8px;background:var(--s3);border:1px solid var(--b1);border-radius:4px;color:var(--gr2);text-transform:uppercase;letter-spacing:.5px;}
+.card-acts{display:flex;gap:8px;padding-top:13px;border-top:1px solid var(--b1);}
+.btn{flex:1;padding:10px 12px;border-radius:8px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .18s;text-align:center;}
+.btn-ok{background:var(--ok);color:#021a0d;}.btn-ok:hover{filter:brightness(1.1);}
+.btn-dc{background:#5865f2;color:#fff;display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;}.btn-dc:hover{background:#6b78f5;}
+.btn-gold{background:var(--gold2);color:#0c0800;}.btn-gold:hover{background:var(--gold3);}
+.btn-ghost{background:transparent;border:1px solid var(--b2);color:var(--gr);}.btn-ghost:hover{color:var(--tx);border-color:var(--b3);}
+
+/* WHY */
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.why-card{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:22px 22px 24px;position:relative;overflow:hidden;}
-.why-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--pu);border-radius:3px 0 0 3px;}
-.why-icon{font-size:20px;margin-bottom:12px;display:block;}
-.why-title{font-size:14px;font-weight:700;margin-bottom:6px;}
-.why-text{font-size:12px;color:var(--gr);line-height:1.6;}
-.coming-soon{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gold2);background:var(--goldd);border:1px solid #f59e0b22;padding:2px 7px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;margin-left:8px;vertical-align:middle;}
+.why-card{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:24px;position:relative;overflow:hidden;transition:all .22s;}
+.why-card::after{content:'';position:absolute;left:0;top:0;width:3px;bottom:0;background:linear-gradient(to bottom,var(--pu3),var(--pu),transparent);border-radius:3px 0 0 3px;}
+.why-card:hover{transform:translateY(-3px);border-color:var(--b3);}
+.why-ico{font-size:22px;margin-bottom:14px;display:block;}
+.why-ttl{font-size:14px;font-weight:700;margin-bottom:6px;}
+.why-txt{font-size:12px;color:var(--gr);line-height:1.65;}
+.badge-soon{font-size:8px;font-family:'DM Mono',monospace;color:var(--gold3);background:var(--goldg);border:1px solid #f59e0b20;padding:2px 7px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;margin-left:8px;vertical-align:middle;}
+
+/* TWEAK BANNER */
+.tw-banner{display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,#1a1200,#0f0c00);border:1px solid #f59e0b25;border-radius:14px;padding:24px 28px;margin-bottom:24px;overflow:hidden;position:relative;}
+.tw-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:radial-gradient(circle,#f59e0b15,transparent 70%);pointer-events:none;}
+.tw-ico{font-size:30px;flex-shrink:0;}.tw-title{font-size:15px;font-weight:800;color:var(--gold3);margin-bottom:4px;}.tw-sub{font-size:12px;color:#8a6b20;line-height:1.6;}
+.tw-badge{margin-left:auto;flex-shrink:0;padding:7px 16px;border-radius:100px;background:var(--goldg);border:1px solid #f59e0b35;font-size:9px;font-family:'DM Mono',monospace;color:var(--gold3);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+
+/* PAYMENT */
+.pay-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px;}
+.pay-card{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:28px 16px;text-align:center;transition:all .25s;position:relative;overflow:hidden;}
+.pay-card::after{content:'';position:absolute;inset:0;border-radius:14px;opacity:0;transition:opacity .25s;background:radial-gradient(circle at 50% 0%,#7c3aed15,transparent 70%);pointer-events:none;}
+.pay-card:hover{transform:translateY(-5px);border-color:#8b5cf240;box-shadow:0 16px 48px #7c3aed12;}
+.pay-card:hover::after{opacity:1;}
+.pay-logo{width:52px;height:52px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;}
+.pay-nm{font-size:15px;font-weight:700;margin-bottom:4px;}.pay-sub{font-size:11px;color:var(--gr);margin-bottom:12px;}
+.pay-badge{display:inline-block;padding:4px 12px;border-radius:100px;font-size:8px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.pb-now{background:#051f12;color:var(--ok2);border:1px solid #10b98120;}
+.pb-soon{background:#1a1400;color:#92660a;border:1px solid #f59e0b15;}
+
+/* FAQ */
+.faq-grid{display:flex;flex-direction:column;gap:10px;}
+.faq-item{background:var(--s1);border:1px solid var(--b1);border-radius:14px;overflow:hidden;transition:border-color .2s;}
+.faq-item.open{border-color:var(--b3);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;gap:16px;}
+.faq-q-txt{font-size:15px;font-weight:700;letter-spacing:-.2px;}
+.faq-icon{width:28px;height:28px;border-radius:8px;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;color:var(--gr);font-size:14px;flex-shrink:0;transition:all .2s;}
+.faq-item.open .faq-icon{background:var(--pug);border-color:#8b5cf230;color:var(--pu3);transform:rotate(45deg);}
+.faq-a{display:none;padding:0 24px 20px;font-size:13px;color:var(--tx2);line-height:1.8;}
+.faq-item.open .faq-a{display:block;}
+.faq-cta{margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--pug);border:1px solid #8b5cf230;border-radius:8px;color:var(--pu3);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;font-family:'Syne',sans-serif;}
+.faq-cta:hover{background:#8b5cf230;}
+.faq-cta-gold{background:var(--goldg);border-color:#f59e0b25;color:var(--gold3);}.faq-cta-gold:hover{background:#f59e0b20;}
+.faq-cta-green{background:#05201255;border-color:#10b98125;color:var(--ok2);}.faq-cta-green:hover{background:#10b98118;}
 
 /* DISCORD SECTION */
-.dc-wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 32px 80px;text-align:center;}
-.dc-card{display:flex;align-items:center;gap:16px;background:var(--s1);border:1px solid var(--b2);border-radius:16px;padding:20px 24px;text-decoration:none;transition:all 0.2s;text-align:left;}
-.dc-card:hover{border-color:#5865F2;box-shadow:0 8px 40px #5865f220;}
-.dc-card-icon{width:44px;height:44px;background:#5865F2;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.dc-card-text{flex:1;}
-.dc-card-title{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:3px;}
-.dc-card-sub{font-size:12px;color:var(--gr);}
-.dc-card-arrow{width:30px;height:30px;background:var(--s3);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gr);font-size:14px;flex-shrink:0;}
-
-/* PACKS / TABS */
-.tab-wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:56px 32px 80px;}
-.sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
-.sec-head-left{display:flex;align-items:center;gap:12px;}
-.sec-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.ico-free{background:#05271a;border:1px solid #34d39920;}
-.ico-paid{background:var(--pud);border:1px solid #8b5cf230;}
-.ico-tweaks{background:var(--goldd);border:1px solid #f59e0b20;}
-.sec-label{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:2.5px;text-transform:uppercase;color:var(--gr2);margin-bottom:2px;}
-.sec-name{font-size:18px;font-weight:800;letter-spacing:-0.3px;}
-.sn-free{color:var(--ok);}
-.sn-paid{color:var(--pu2);}
-.sn-tweaks{color:var(--gold2);}
-.count-pill{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--gr2);background:var(--s2);border:1px solid var(--b1);padding:3px 10px;border-radius:100px;}
-
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
-
-/* CARD */
-.card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;overflow:hidden;cursor:pointer;transition:all 0.22s;position:relative;}
-.card:hover{border-color:var(--pu);transform:translateY(-4px);box-shadow:0 18px 50px #8b5cf618;}
-.card.gc:hover{border-color:var(--gold);box-shadow:0 18px 50px #f59e0b18;}
-.card-img{width:100%;aspect-ratio:16/9;background:var(--s2);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
-.card-img img{width:100%;height:100%;object-fit:cover;display:block;}
-.card-ph{font-size:28px;opacity:0.1;color:var(--pu);font-weight:900;font-family:'JetBrains Mono',monospace;}
-.card-ph.gph{color:var(--gold);}
-.bt{position:absolute;top:9px;left:9px;padding:3px 8px;border-radius:5px;font-size:8px;font-family:'JetBrains Mono',monospace;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;}
-.bt-pvp{background:#8b5cf220;color:var(--pu3);border:1px solid #8b5cf240;}
-.bt-cpvp{background:#6d28d920;color:#c4b5fd;border:1px solid #6d28d940;}
-.bt-tw{background:var(--goldd);color:var(--gold2);border:1px solid #f59e0b30;}
-.bp{position:absolute;top:9px;right:9px;padding:3px 8px;border-radius:5px;font-size:8px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
-.bp-free{background:#05271a;color:var(--ok);border:1px solid #34d39930;}
-.bp-paid{background:#1a0a20;color:var(--pu2);border:1px solid #8b5cf230;}
-.bp-gold{background:#1a1200;color:var(--gold2);border:1px solid #f59e0b30;}
-.card-body{padding:14px 16px 16px;}
-.card-name{font-size:14px;font-weight:700;margin-bottom:4px;}
-.card-desc{font-size:11px;color:var(--gr);line-height:1.55;margin-bottom:10px;}
-.card-metas{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
-.mt{font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 7px;background:var(--s3);border:1px solid var(--b1);border-radius:4px;color:var(--gr2);text-transform:uppercase;letter-spacing:0.5px;}
-.card-acts{display:flex;gap:7px;padding-top:12px;border-top:1px solid var(--b1);}
-.btn{flex:1;padding:9px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;text-align:center;letter-spacing:0.3px;}
-.btn-ok{background:var(--ok);color:#03110a;}
-.btn-ok:hover{filter:brightness(1.1);}
-.btn-dc{background:#5865F2;color:#fff;display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;}
-.btn-dc:hover{background:#6b78f5;}
-.btn-gold{background:var(--gold);color:#0c0800;}
-.btn-gold:hover{background:var(--gold2);}
-.btn-ghost{background:transparent;border:1px solid var(--b2);color:var(--gr);}
-.btn-ghost:hover{color:var(--tx2);border-color:var(--b3);}
-
-/* TWEAKS BANNER */
-.tw-banner{display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,#1a1200,#0f0c00);border:1px solid #f59e0b30;border-radius:14px;padding:22px 26px;margin-bottom:22px;position:relative;overflow:hidden;}
-.tw-banner::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,#f59e0b1a,transparent 70%);pointer-events:none;}
-.tw-ico{font-size:28px;flex-shrink:0;}
-.tw-title{font-size:15px;font-weight:800;color:var(--gold2);margin-bottom:4px;}
-.tw-sub{font-size:12px;color:#a17c2a;line-height:1.6;}
-.tw-badge{margin-left:auto;flex-shrink:0;padding:6px 14px;border-radius:100px;background:var(--goldd);border:1px solid #f59e0b40;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--gold2);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.dc-card{display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--b2);border-radius:16px;padding:22px 26px;text-decoration:none;transition:all .22s;}
+.dc-card:hover{border-color:#5865f240;box-shadow:0 10px 50px #5865f218;}
+.dc-ico{width:48px;height:48px;background:#5865f2;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dc-txt{flex:1;}.dc-ttl{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:3px;}.dc-sub{font-size:13px;color:var(--gr);}
+.dc-arr{width:32px;height:32px;background:var(--s3);border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--gr);font-size:15px;flex-shrink:0;}
 
 /* EMPTY */
-.empty{grid-column:1/-1;text-align:center;padding:60px 24px;border:1px dashed var(--b2);border-radius:14px;}
-.empty-ico{font-size:30px;opacity:0.15;margin-bottom:12px;}
-.empty-h{font-size:12px;font-weight:600;color:var(--gr2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
-.empty-t{font-size:12px;color:var(--gr2);opacity:0.5;}
+.empty{grid-column:1/-1;text-align:center;padding:70px 24px;border:1px dashed var(--b2);border-radius:14px;}
+.empty-ico{font-size:32px;opacity:.12;margin-bottom:14px;}.empty-h{font-size:11px;font-weight:700;color:var(--gr2);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}.empty-t{font-size:12px;color:var(--gr2);opacity:.5;}
+.loading{display:flex;align-items:center;justify-content:center;padding:60px;color:var(--gr);font-size:11px;font-family:'DM Mono',monospace;gap:10px;letter-spacing:1px;}
+.loading::before{content:'';width:14px;height:14px;border:2px solid var(--b3);border-top-color:var(--pu3);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
 /* LOGIN */
-.login-box{background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:44px;width:100%;max-width:380px;position:relative;z-index:1;}
-.login-box h2{font-size:24px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;}
-.login-box p{font-size:13px;color:var(--gr);margin-bottom:28px;}
-.lbl{display:block;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
-.inp{width:100%;padding:11px 14px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border-color 0.18s;margin-bottom:16px;}
-.inp:focus{border-color:var(--pu);}
-.inp::placeholder{color:var(--gr2);}
-.err-msg{color:var(--err);font-size:10px;font-family:'JetBrains Mono',monospace;margin-top:8px;display:none;}
+.login-box{background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:48px;width:100%;max-width:390px;position:relative;z-index:2;}
+.login-box h2{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;}.login-box p{font-size:13px;color:var(--gr);margin-bottom:28px;line-height:1.6;}
+.lbl{display:block;font-size:8px;font-family:'DM Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}
+.inp{width:100%;padding:12px 15px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;color:var(--tx);font-family:'Syne',sans-serif;font-size:14px;outline:none;transition:border-color .18s;margin-bottom:16px;}
+.inp:focus{border-color:var(--pu2);}.inp::placeholder{color:var(--gr2);}
+.err-msg{color:var(--err);font-size:10px;font-family:'DM Mono',monospace;margin-top:8px;display:none;}
 
 /* ADMIN */
-.admin-wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:50px 32px 80px;}
-.admin-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;}
-.admin-top h2{font-size:30px;font-weight:800;letter-spacing:-1px;}
-.admin-top p{font-size:13px;color:var(--gr);margin-top:4px;}
-.logout-btn{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--gr2);cursor:pointer;padding:6px 12px;border-radius:7px;border:1px solid var(--b2);background:transparent;transition:all 0.18s;}
-.logout-btn:hover{color:var(--err);border-color:var(--err);}
-.acard{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:26px;margin-bottom:18px;}
-.acard-title{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:20px;}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.sel{width:100%;padding:10px 14px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;outline:none;cursor:pointer;}
-.sel:focus{border-color:var(--pu);}
+.admin-wrap{max-width:840px;margin:0 auto;padding:56px 32px 80px;position:relative;z-index:2;}
+.admin-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;}
+.admin-top h2{font-size:32px;font-weight:800;letter-spacing:-1px;}.admin-top p{font-size:13px;color:var(--gr);margin-top:4px;}
+.logout-btn{font-size:10px;font-family:'DM Mono',monospace;color:var(--gr2);cursor:pointer;padding:9px 18px;border-radius:9px;border:1px solid var(--b2);background:transparent;transition:all .18s;letter-spacing:1px;}
+.logout-btn:hover{color:var(--err);border-color:#ef444430;}
+.acard{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:28px;margin-bottom:18px;}
+.acard-title{font-size:8px;font-family:'DM Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:3px;margin-bottom:22px;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sel{width:100%;padding:12px 15px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;color:var(--tx);font-family:'Syne',sans-serif;font-size:13px;outline:none;cursor:pointer;}
+.sel:focus{border-color:var(--pu2);}
 textarea.inp{resize:vertical;min-height:80px;margin-bottom:0;}
-.tog{display:flex;gap:8px;margin-bottom:10px;}
-.tog-opt{flex:1;padding:8px;background:var(--s3);border:1px solid var(--b1);border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr2);transition:all 0.18s;letter-spacing:0.5px;}
-.tog-opt.on{border-color:var(--pu);color:var(--pu3);background:var(--pud);}
-.dz{border:1.5px dashed var(--b2);border-radius:10px;padding:22px;text-align:center;cursor:pointer;transition:all 0.18s;background:var(--s2);}
-.dz:hover,.dz.ov{border-color:var(--pu);background:var(--pud);}
-.dz-ico{font-size:20px;opacity:0.35;margin-bottom:6px;}
-.dz-t{font-size:12px;color:var(--gr);margin-bottom:2px;}
-.dz-h{font-size:9px;color:var(--gr2);font-family:'JetBrains Mono',monospace;}
-.dz-ok{font-size:10px;color:var(--ok);margin-top:6px;font-family:'JetBrains Mono',monospace;}
-
-/* ADMIN LIST */
-.arow{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--s2);border:1px solid var(--b1);border-radius:10px;margin-bottom:8px;}
-.arow-th{width:50px;height:34px;background:var(--s3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;overflow:hidden;}
+.dz{border:1.5px dashed var(--b2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .18s;background:var(--s2);}
+.dz:hover,.dz.ov{border-color:var(--pu2);background:var(--pug);}
+.dz-ico{font-size:22px;opacity:.3;margin-bottom:8px;}.dz-t{font-size:12px;color:var(--gr);margin-bottom:3px;}.dz-h{font-size:9px;color:var(--gr2);font-family:'DM Mono',monospace;}.dz-ok{font-size:10px;color:var(--ok2);margin-top:7px;font-family:'DM Mono',monospace;}
+.arow{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--s2);border:1px solid var(--b1);border-radius:10px;margin-bottom:8px;}
+.arow-th{width:52px;height:36px;background:var(--s3);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
 .arow-th img{width:100%;height:100%;object-fit:cover;}
-.arow-info{flex:1;min-width:0;}
-.arow-name{font-size:13px;font-weight:600;margin-bottom:2px;}
-.arow-meta{font-size:9px;color:var(--gr2);font-family:'JetBrains Mono',monospace;}
-.del-btn{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b1);background:transparent;color:var(--gr2);font-size:12px;transition:all 0.18s;flex-shrink:0;}
-.del-btn:hover{border-color:var(--err);color:var(--err);background:#f43f5e0a;}
+.arow-info{flex:1;min-width:0;}.arow-nm{font-size:13px;font-weight:700;margin-bottom:2px;}.arow-meta{font-size:9px;color:var(--gr2);font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.del-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #ef444425;background:#ef444408;color:var(--err);font-size:15px;transition:all .18s;flex-shrink:0;}
+.del-btn:hover{background:#ef444418;border-color:#ef444450;}
+.sync-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;font-family:'DM Mono',monospace;color:var(--ok2);padding:4px 12px;background:#05201555;border:1px solid #10b98120;border-radius:100px;margin-left:12px;}
+.sdot{width:5px;height:5px;background:var(--ok2);border-radius:50%;animation:pulse 1.5s ease infinite;}
 
 /* MODAL */
-.overlay{display:none;position:fixed;inset:0;background:#07070cf2;backdrop-filter:blur(16px);z-index:200;align-items:center;justify-content:center;padding:20px;}
-.overlay.open{display:flex;animation:fadeUp 0.2s ease;}
+.overlay{display:none;position:fixed;inset:0;background:#04040aee;backdrop-filter:blur(20px);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;animation:fadeIn .2s ease;}
 .modal{background:var(--s1);border:1px solid var(--b2);border-radius:20px;width:100%;max-width:500px;overflow:hidden;}
-.modal-h{padding:24px 26px 0;display:flex;align-items:flex-start;justify-content:space-between;}
-.modal-title{font-size:20px;font-weight:800;letter-spacing:-0.4px;}
-.modal-x{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);background:transparent;color:var(--gr);font-size:13px;transition:all 0.18s;flex-shrink:0;}
-.modal-x:hover{border-color:var(--err);color:var(--err);}
-.modal-b{padding:16px 26px 26px;}
-.modal-top{display:flex;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--b1);}
-.modal-img{width:96px;height:64px;border-radius:9px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;}
+.modal-h{padding:26px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.modal-title{font-size:21px;font-weight:800;letter-spacing:-.4px;}
+.modal-x{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);background:transparent;color:var(--gr);font-size:13px;transition:all .18s;flex-shrink:0;}
+.modal-x:hover{border-color:#ef444430;color:var(--err);}
+.modal-b{padding:18px 28px 28px;}
+.modal-top{display:flex;gap:16px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--b1);}
+.modal-img{width:100px;height:67px;border-radius:10px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden;}
 .modal-img img{width:100%;height:100%;object-fit:cover;}
-.modal-desc{font-size:12px;color:var(--gr);line-height:1.6;margin-bottom:8px;}
-.modal-price{font-size:20px;font-weight:800;letter-spacing:-0.5px;}
-.modal-price.free{color:var(--ok);}
-.modal-price.paid{color:var(--pu2);}
-.modal-price.tw{color:var(--gold2);}
-.ig{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-.ib{background:var(--s2);border:1px solid var(--b1);border-radius:9px;padding:9px 12px;}
-.ib-l{font-size:8px;font-family:'JetBrains Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
-.ib-v{font-size:13px;font-weight:600;}
-.modal-acts{display:flex;gap:8px;}
-.modal-dl{flex:1;padding:12px;border-radius:9px;background:var(--ok);color:#03110a;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:filter 0.18s;}
-.modal-dl:hover{filter:brightness(1.1);}
-.modal-dc{flex:1;padding:12px;border-radius:9px;background:#5865F2;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;}
-.modal-dc:hover{background:#6b78f5;}
-.modal-gold{flex:1;padding:12px;border-radius:9px;background:var(--gold);color:#0c0800;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;}
-.modal-gold:hover{background:var(--gold2);}
+.modal-desc{font-size:12px;color:var(--gr);line-height:1.65;margin-bottom:8px;}
+.modal-price{font-size:22px;font-weight:800;letter-spacing:-.5px;}
+.modal-price.free{color:var(--ok2);}.modal-price.paid{color:var(--pu3);}.modal-price.tw{color:var(--gold3);}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;}
+.ib{background:var(--s2);border:1px solid var(--b1);border-radius:9px;padding:10px 14px;}
+.ib-l{font-size:7px;font-family:'DM Mono',monospace;color:var(--gr2);text-transform:uppercase;letter-spacing:2px;margin-bottom:3px;}.ib-v{font-size:13px;font-weight:700;}
+.modal-acts{display:flex;gap:9px;}
+.modal-dl,.modal-dc,.modal-gold{flex:1;padding:13px;border-radius:9px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;}
+.modal-dl{background:var(--ok);color:#021a0d;}.modal-dl:hover{filter:brightness(1.1);}
+.modal-dc{background:#5865f2;color:#fff;}.modal-dc:hover{background:#6b78f5;}
+.modal-gold{background:var(--gold2);color:#0c0800;}.modal-gold:hover{background:var(--gold3);}
 
 /* TOASTS */
-.toasts{position:fixed;bottom:20px;right:20px;z-index:300;display:flex;flex-direction:column;gap:6px;}
-.toast{padding:10px 16px;border-radius:9px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:7px;animation:fadeUp 0.25s ease;font-family:'JetBrains Mono',monospace;}
-.t-ok{background:#061510;border:1px solid #34d39930;color:var(--ok);}
-.t-err{background:#160509;border:1px solid #f43f5e30;color:var(--err);}
+.toasts{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:7px;}
+.toast{padding:11px 18px;border-radius:10px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:.5px;animation:fadeIn .25s ease;}
+.t-ok{background:#05201599;color:var(--ok2);border:1px solid #10b98125;backdrop-filter:blur(10px);}
+.t-err{background:#1f050a99;color:var(--err);border:1px solid #ef444425;backdrop-filter:blur(10px);}
+
+/* LEGAL */
+.legal-wrap{max-width:760px;margin:0 auto;padding:60px 32px 80px;position:relative;z-index:2;}
+.legal-wrap h2{font-size:34px;font-weight:800;letter-spacing:-1px;margin-bottom:8px;}
+.legal-date{font-size:10px;color:var(--gr2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:40px;}
+.legal-sec{margin-bottom:30px;}.legal-sec h3{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--pu4);}.legal-sec p{font-size:13px;color:var(--tx2);line-height:1.85;}
+
+/* REVIEWS */
+.rev-form{background:var(--s1);border:1px solid var(--b2);border-radius:16px;padding:28px;margin-bottom:24px;}
+.rstar{font-size:28px;cursor:pointer;filter:grayscale(1) opacity(.2);transition:filter .15s;user-select:none;}
 
 /* FOOTER */
-footer{position:relative;z-index:1;border-top:1px solid var(--b1);padding:28px 40px;}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.ft-brand{display:flex;flex-direction:column;gap:3px;}
-.ft-logo{font-size:14px;font-weight:800;color:var(--tx2);}
-.ft-logo span{color:var(--pu);}
-.ft-sub{font-size:10px;color:var(--gr2);font-family:'JetBrains Mono',monospace;}
-.ft-copy{text-align:center;}
-.ft-copy-main{font-size:11px;color:var(--gr2);font-family:'JetBrains Mono',monospace;margin-bottom:3px;}
-.ft-copy-sub{font-size:10px;color:var(--gr2);opacity:0.4;font-family:'JetBrains Mono',monospace;}
-.ft-dc{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:100px;background:var(--s2);border:1px solid var(--b2);font-size:12px;font-weight:600;color:var(--tx2);text-decoration:none;transition:all 0.18s;}
-.ft-dc:hover{border-color:#5865F2;color:#fff;background:#5865f215;}
+footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var(--s1);}
+.ft-top{max-width:1100px;margin:0 auto;padding:56px 32px 44px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;}
+.ft-brand{font-size:19px;font-weight:800;letter-spacing:-.3px;margin-bottom:10px;}.ft-brand span{color:var(--pu3);}
+.ft-desc{font-size:12px;color:var(--gr);line-height:1.8;max-width:200px;}
+.ft-col-h{font-size:8px;font-family:'DM Mono',monospace;letter-spacing:3px;text-transform:uppercase;color:var(--gr2);margin-bottom:16px;}
+.ft-links{display:flex;flex-direction:column;gap:11px;}
+.ft-link{font-size:13px;color:var(--gr);cursor:pointer;transition:color .15s;text-decoration:none;}.ft-link:hover{color:var(--tx2);}
+.ft-dc{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:#5865f215;border:1px solid #5865f230;border-radius:9px;color:#a5b4fc;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:'Syne',sans-serif;}
+.ft-dc:hover{background:#5865f225;border-color:#5865f245;}
+.ft-bot{border-top:1px solid var(--b1);padding:20px 32px;max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.ft-copy{font-size:10px;color:var(--gr2);font-family:'DM Mono',monospace;letter-spacing:.5px;}
 
-@media(max-width:900px){.why-grid{grid-template-columns:1fr 1fr;}}
+/* RESPONSIVE */
+@media(max-width:900px){.why-grid{grid-template-columns:1fr 1fr;}.pay-grid{grid-template-columns:1fr 1fr;}.ft-top{grid-template-columns:1fr 1fr;gap:28px;}}
 @media(max-width:680px){
-  .why-grid{grid-template-columns:1fr;}
+  header{padding:0 20px;height:66px;}.nav-links{display:none;}.ham{display:flex;}
   .hero{padding:60px 20px 50px;}
-  .why-wrap,.tab-wrap,.dc-wrap{padding-left:20px;padding-right:20px;}
-  .admin-wrap{padding:36px 20px 60px;}
+  .wrap,.wrap-sm,.tab-wrap,.admin-wrap,.legal-wrap{padding-left:20px;padding-right:20px;}
+  .why-grid{grid-template-columns:1fr;}.pay-grid{grid-template-columns:1fr 1fr;}
   .fg2{grid-template-columns:1fr;}
-  footer{padding:22px 20px;}
-  .footer-inner{flex-direction:column;align-items:center;text-align:center;}
-  .nav-pill{padding:4px 4px 4px 10px;gap:0;}
-  .nb{padding:5px 9px;font-size:11px;}
+  .ft-top{grid-template-columns:1fr;gap:24px;padding:32px 20px 28px;}
+  .ft-bot{flex-direction:column;gap:8px;text-align:center;padding:16px 20px;}
+  .hero-stats{flex-wrap:wrap;}.hst{min-width:calc(50% - 1px);}
+  .hst-sep:nth-child(6){display:none;}
 }
+@media(max-width:420px){.pay-grid{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
 
-<div class="floats">
-  <div class="float f1"></div><div class="float f2"></div><div class="float f3"></div>
-  <div class="float f4"></div><div class="float f5"></div><div class="float f6"></div>
-  <div class="cube c1"></div><div class="cube c2"></div>
-</div>
-<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+<canvas id="bgc"></canvas>
 
-<!-- HEADER -->
 <header>
-  <div class="nav-pill">
-    <div class="nav-logo" onclick="switchTab('home')">
-      <div class="nav-logo-dot">A</div>
-      Arox <span>Pack Hub</span>
-    </div>
-    <div class="nav-sep"></div>
-    <button class="nb" id="nl-free"   onclick="switchTab('free')">Free Packs</button>
-    <button class="nb" id="nl-paid"   onclick="switchTab('paid')">Paid Packs</button>
-    <button class="nb" id="nl-tweaks" onclick="switchTab('tweaks')">Tweaks ⚡</button>
+  <div class="nav-brand" onclick="switchTab('home')">
+    <div class="nav-mark">A</div>
+    <div class="nav-name">Arox <span>Pack Hub</span></div>
+  </div>
+  <nav class="nav-links">
+    <button class="nb" id="nl-free"    onclick="switchTab('free')">Free Packs</button>
+    <button class="nb" id="nl-paid"    onclick="switchTab('paid')">Paid Packs</button>
+    <button class="nb" id="nl-tweaks"  onclick="switchTab('tweaks')">Tweaks ⚡</button>
     <button class="nb" id="nl-reviews" onclick="switchTab('reviews')">Reviews</button>
-    <div class="nav-sep"></div>
-    <button class="nb" id="nl-admin"  onclick="goAdmin()">Admin</button>
+    <button class="nb" id="nl-faq"     onclick="switchTab('faq')">FAQ</button>
+  </nav>
+  <div class="nav-r">
+    <a class="nav-dc" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener">
+      <svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>
+      Discord
+    </a>
+    <button class="nav-adm" id="nl-admin" onclick="goAdmin()">Admin</button>
+    <div class="ham" onclick="toggleMob()"><span></span><span></span><span></span></div>
   </div>
 </header>
 
+<div class="mob-menu" id="mob-menu">
+  <button class="mob-btn" onclick="switchTab('free');closeMob()">🟢 Free Packs</button>
+  <button class="mob-btn" onclick="switchTab('paid');closeMob()">🔮 Paid Packs</button>
+  <button class="mob-btn" onclick="switchTab('tweaks');closeMob()">⚡ Tweaks</button>
+  <button class="mob-btn" onclick="switchTab('reviews');closeMob()">⭐ Reviews</button>
+  <button class="mob-btn" onclick="switchTab('faq');closeMob()">❓ FAQ</button>
+  <button class="mob-btn" onclick="goAdmin();closeMob()">🔐 Admin</button>
+</div>
+
 <!-- ══ HOME ══ -->
 <div id="page-home" class="page active">
-
   <div class="hero">
-    <div class="chip"><span class="chip-dot"></span>PvP · CPvP · Texture Packs</div>
-    <h1>AROX<br><span class="hl">PACK</span><br>HUB</h1>
+    <div class="hero-badge"><span class="bdot"></span>PvP · CPvP · Texture Packs</div>
+    <h1>AROX<br><em>PACK</em><br>HUB</h1>
     <p class="hero-sub">Premium Minecraft PvP &amp; Crystal PvP texture packs. Clean visuals, maximum performance.</p>
     <div class="hero-btns">
-      <button class="btn-hero-p" onclick="switchTab('free')">Browse Packs →</button>
-      <a class="btn-hero-g" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener">Join Discord</a>
+      <button class="btn-main" onclick="switchTab('free')">Browse Free Packs →</button>
+      <a class="btn-out" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener">
+        <svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>
+        Join Discord
+      </a>
     </div>
-    <div class="hero-stat">
-      <div class="stat-icon">🛍️</div>
-      <div>
-        <div class="stat-num" id="dl-count">0</div>
-        <div class="stat-label">Downloads</div>
-      </div>
+    <div class="hero-stats">
+      <div class="hst"><div class="hst-n" id="cnt-h-free" style="color:var(--ok2)">…</div><div class="hst-l">Free Packs</div></div>
+      <div class="hst-sep"></div>
+      <div class="hst"><div class="hst-n" id="cnt-h-paid" style="color:var(--pu3)">…</div><div class="hst-l">Paid Packs</div></div>
+      <div class="hst-sep"></div>
+      <div class="hst"><div class="hst-n" id="cnt-h-tweaks" style="color:var(--gold3)">…</div><div class="hst-l">Tweaks</div></div>
+      <div class="hst-sep"></div>
+      <div class="hst"><div class="hst-n" id="h-avg" style="color:var(--gold2)">—</div><div class="hst-l">Avg Rating</div></div>
     </div>
-    <div class="hero-tags">
-      <div class="htag">⚔️ PvP</div>
-      <div class="htag">💎 Crystal PvP</div>
-      <div class="htag">🎨 Custom Made</div>
-      <div class="htag">👤 By Arox</div>
-    </div>
+    <div class="hero-tags"><span class="htag">⚔️ PvP</span><span class="htag">💎 CPvP</span><span class="htag">🎨 Custom</span><span class="htag">👤 By Arox</span><span class="htag">🌍 Worldwide</span></div>
   </div>
 
-  <!-- WHY DIFFERENT -->
-  <div class="why-wrap">
-    <div class="sec-center">
-      <div class="sec-chip">✦ Why Choose Arox</div>
-      <div class="sec-h">Why We're Different</div>
-      <p class="sec-p">No tricks, no fake stats — just clean packs and honest quality.</p>
-    </div>
+  <!-- WHY -->
+  <div class="wrap">
+    <div class="sec-hd"><div class="sec-tag">✦ Why Arox</div><div class="sec-h">Why We're Different</div><p class="sec-p">No tricks, no fake stats — just clean packs and honest quality.</p></div>
     <div class="why-grid">
-      <div class="why-card">
-        <span class="why-icon">⬇️</span>
-        <div class="why-title">Instant Delivery <span class="coming-soon">Soon</span></div>
-        <div class="why-text">Free packs are available for instant download. Paid packs delivered via Discord within minutes.</div>
-      </div>
-      <div class="why-card">
-        <span class="why-icon">💬</span>
-        <div class="why-title">Discord Support</div>
-        <div class="why-text">Got questions? Join the Discord and get help directly from Arox whenever you need it.</div>
-      </div>
-      <div class="why-card">
-        <span class="why-icon">🎨</span>
-        <div class="why-title">Custom Made</div>
-        <div class="why-text">Every pack is handcrafted by Arox — not resold or copied. Built for PvP and Crystal PvP players.</div>
-      </div>
-      <div class="why-card">
-        <span class="why-icon">⚡</span>
-        <div class="why-title">Performance First</div>
-        <div class="why-text">All packs are optimized for high FPS. Clean visuals without sacrificing performance.</div>
-      </div>
-      <div class="why-card">
-        <span class="why-icon">🔒</span>
-        <div class="why-title">No Hidden Fees</div>
-        <div class="why-text">Price you see is the price you pay. Free packs are actually free, no tricks.</div>
-      </div>
-      <div class="why-card">
-        <span class="why-icon">🏆</span>
-        <div class="why-title">Competitive Edge</div>
-        <div class="why-text">Used by active PvP and CPvP players. Designed to give you a real visual advantage.</div>
-      </div>
+      <div class="why-card"><span class="why-ico">⬇️</span><div class="why-ttl">Instant Delivery <span class="badge-soon">Soon</span></div><div class="why-txt">Free packs download instantly. Paid packs delivered via Discord within minutes.</div></div>
+      <div class="why-card"><span class="why-ico">💬</span><div class="why-ttl">Discord Support</div><div class="why-txt">Get help directly from Arox whenever you need it in our server.</div></div>
+      <div class="why-card"><span class="why-ico">🎨</span><div class="why-ttl">Custom Made</div><div class="why-txt">Every pack handcrafted by Arox — not resold or copied. Built for PvP players.</div></div>
+      <div class="why-card"><span class="why-ico">⚡</span><div class="why-ttl">Performance First</div><div class="why-txt">All packs optimized for high FPS. Clean visuals without sacrificing performance.</div></div>
+      <div class="why-card"><span class="why-ico">🔒</span><div class="why-ttl">No Hidden Fees</div><div class="why-txt">Price you see is what you pay. Free packs are actually free. No tricks.</div></div>
+      <div class="why-card"><span class="why-ico">🌍</span><div class="why-ttl">Live & Worldwide</div><div class="why-txt">Powered by Firebase. New packs and updates appear live for everyone instantly.</div></div>
     </div>
   </div>
 
-  <!-- DISCORD JOIN -->
-  <div class="dc-wrap">
-    <div class="sec-center">
-      <div class="sec-chip">👑 Community</div>
-      <div class="sec-h">Join the Community</div>
+  <!-- PAYMENT -->
+  <div class="wrap" style="padding-top:0">
+    <div class="sec-hd"><div class="sec-tag">💳 Payments</div><div class="sec-h">Payment Methods</div><p class="sec-p">All payments processed securely via Discord.</p></div>
+    <div class="pay-grid">
+      <div class="pay-card">
+        <div class="pay-logo"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#1a1a2e"/><rect x="8" y="16" width="32" height="20" rx="4" stroke="#8b5cf6" stroke-width="1.5" fill="none"/><rect x="8" y="22" width="32" height="5" fill="#7c3aed" opacity="0.35"/><rect x="12" y="29" width="8" height="3" rx="1.5" fill="#a78bfa"/><circle cx="36" cy="30" r="2" fill="#8b5cf6" opacity="0.6"/><circle cx="33" cy="30" r="2" fill="#a78bfa" opacity="0.8"/></svg></div>
+        <div class="pay-nm">Paysafecard</div><div class="pay-sub">DE · Prepaid</div><span class="pay-badge pb-now">INSTANT</span>
+      </div>
+      <div class="pay-card">
+        <div class="pay-logo"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#0f1a10"/><circle cx="24" cy="24" r="14" stroke="#84cc16" stroke-width="1.5" fill="none"/><circle cx="24" cy="24" r="10" stroke="#84cc16" stroke-width="0.8" fill="none" opacity="0.4"/><text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-size="11" font-weight="700" fill="#a3e635" font-family="monospace">LTC</text></svg></div>
+        <div class="pay-nm">Litecoin</div><div class="pay-sub">LTC · Crypto</div><span class="pay-badge pb-now">INSTANT</span>
+      </div>
+      <div class="pay-card">
+        <div class="pay-logo"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#1a1000"/><circle cx="24" cy="24" r="14" stroke="#f59e0b" stroke-width="1.5" fill="none"/><circle cx="24" cy="24" r="10" stroke="#f59e0b" stroke-width="0.8" fill="none" opacity="0.4"/><text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16" font-weight="800" fill="#f59e0b" font-family="serif">₿</text></svg></div>
+        <div class="pay-nm">Bitcoin</div><div class="pay-sub">BTC · Crypto</div><span class="pay-badge pb-now">INSTANT</span>
+      </div>
+      <div class="pay-card" style="opacity:.45">
+        <div class="pay-logo"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#0a1022"/><rect x="10" y="14" width="28" height="20" rx="5" fill="#003087" opacity="0.6"/><text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-size="11" font-weight="800" fill="#60a5fa" font-family="sans-serif">PayPal</text></svg></div>
+        <div class="pay-nm">PayPal</div><div class="pay-sub">PP · Coming soon</div><span class="pay-badge pb-soon">SOON</span>
+      </div>
     </div>
+    <p style="text-align:center;margin-top:20px;font-size:12px;color:var(--gr)">💬 Pay via <a href="https://discord.gg/yPkMphv2PC" target="_blank" style="color:var(--pu3);text-decoration:none;font-weight:700;">Discord</a></p>
+  </div>
+
+  <!-- FAQ -->
+  <div class="wrap" style="padding-top:0">
+    <div class="sec-hd"><div class="sec-tag">❓ FAQ</div><div class="sec-h">Frequently Asked</div><p class="sec-p">Everything you need to know before you start.</p></div>
+    <div class="faq-grid">
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span class="faq-q-txt">Is it safe to use these texture packs?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">100% safe. Arox packs are plain Minecraft resource packs — they only change visuals. No mods, no executables, nothing that can get you banned. Works on all vanilla-compatible clients.
+          <div style="margin-top:12px"><button class="faq-cta faq-cta-green" onclick="event.stopPropagation();switchTab('free')">🟢 Browse Free Packs →</button></div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span class="faq-q-txt">How do I get a paid pack?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Paid packs are delivered via Discord. Simply open a ticket in our server, pay with one of the supported methods (Paysafecard, LTC, BTC) and you'll receive your pack within minutes.
+          <div style="margin-top:12px"><a class="faq-cta" href="https://discord.gg/yPkMphv2PC" target="_blank" onclick="event.stopPropagation()"><svg width="12" height="10" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg> Open Discord Ticket →</a></div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span class="faq-q-txt">What Minecraft versions are supported?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">All Arox packs support Minecraft 1.8 through the latest version. Whether you're playing on 1.8 PvP servers or modern survival — the packs are compatible. Each pack page shows the exact version range.
+          <div style="margin-top:12px"><button class="faq-cta" onclick="event.stopPropagation();switchTab('free')">📦 See All Packs →</button></div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span class="faq-q-txt">Will this improve my FPS?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Yes! All Arox packs are optimized for performance. Lower resolution textures (16x) especially give a significant FPS boost. Even 32x packs are built lean. Want extra performance? Check out Arox Tweaks.
+          <div style="margin-top:12px"><button class="faq-cta faq-cta-gold" onclick="event.stopPropagation();switchTab('tweaks')">⚡ View Arox Tweaks →</button></div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span class="faq-q-txt">Are the free packs actually free?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Yes — 100% free, no strings attached. Download them directly from this website. No email required, no hidden fees, no upsells. Free packs are Arox's way of giving back to the community.
+          <div style="margin-top:12px"><button class="faq-cta faq-cta-green" onclick="event.stopPropagation();switchTab('free')">🟢 Get Free Packs →</button></div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span class="faq-q-txt">Ready to get started?</span><div class="faq-icon">+</div></div>
+        <div class="faq-a">Jump in! Browse free packs, check out the premium options, or join the Discord for help. Everything is a click away.
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="faq-cta faq-cta-green" onclick="event.stopPropagation();switchTab('free')">🟢 Free Packs</button>
+            <button class="faq-cta" onclick="event.stopPropagation();switchTab('paid')">🔮 Paid Packs</button>
+            <button class="faq-cta faq-cta-gold" onclick="event.stopPropagation();switchTab('tweaks')">⚡ Tweaks</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DISCORD GANZ UNTEN -->
+  <div class="wrap-sm" style="padding-top:0">
+    <div class="sec-hd"><div class="sec-tag">👑 Community</div><div class="sec-h">Join the Community</div></div>
     <a class="dc-card" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener">
-      <div class="dc-card-icon">
-        <svg width="20" height="16" viewBox="0 0 71 55" fill="#fff"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>
-      </div>
-      <div class="dc-card-text">
-        <div class="dc-card-title">Discord</div>
-        <div class="dc-card-sub">Join our community — buy packs, get support &amp; stay updated</div>
-      </div>
-      <div class="dc-card-arrow">↗</div>
+      <div class="dc-ico"><svg width="22" height="17" viewBox="0 0 71 55" fill="#fff"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg></div>
+      <div class="dc-txt"><div class="dc-ttl">Discord — Join Now</div><div class="dc-sub">Buy packs, get support, stay updated. 24/7 community.</div></div>
+      <div class="dc-arr">↗</div>
     </a>
   </div>
-
 </div>
 
-<!-- ══ FREE PACKS ══ -->
+<!-- FREE -->
 <div id="page-free" class="page">
   <div class="tab-wrap">
-    <div class="sec-row">
-      <div class="sec-head-left">
-        <div class="sec-ico ico-free">🟢</div>
-        <div><div class="sec-label">Section 01</div><div class="sec-name sn-free">Free Packs</div></div>
-      </div>
-      <span class="count-pill" id="cnt-free">0 Packs</span>
-    </div>
-    <div class="grid" id="grid-free"></div>
+    <div class="tab-hd"><div class="tab-hd-l"><div class="tab-ico ico-free">🟢</div><div><div class="tab-lbl">Section 01</div><div class="tab-nm nm-free">Free Packs</div></div></div><span class="cnt-pill" id="cnt-free">— Packs</span></div>
+    <div class="grid" id="grid-free"><div class="loading">CONNECTING TO FIREBASE</div></div>
   </div>
 </div>
 
-<!-- ══ PAID PACKS ══ -->
+<!-- PAID -->
 <div id="page-paid" class="page">
   <div class="tab-wrap">
-    <div class="sec-row">
-      <div class="sec-head-left">
-        <div class="sec-ico ico-paid">🔮</div>
-        <div><div class="sec-label">Section 02</div><div class="sec-name sn-paid">Paid Packs</div></div>
-      </div>
-      <span class="count-pill" id="cnt-paid">0 Packs</span>
-    </div>
-    <div class="grid" id="grid-paid"></div>
+    <div class="tab-hd"><div class="tab-hd-l"><div class="tab-ico ico-paid">🔮</div><div><div class="tab-lbl">Section 02</div><div class="tab-nm nm-paid">Paid Packs</div></div></div><span class="cnt-pill" id="cnt-paid">— Packs</span></div>
+    <div class="grid" id="grid-paid"><div class="loading">CONNECTING TO FIREBASE</div></div>
   </div>
 </div>
 
-<!-- ══ TWEAKS ══ -->
+<!-- TWEAKS -->
 <div id="page-tweaks" class="page">
   <div class="tab-wrap">
-    <div class="sec-row">
-      <div class="sec-head-left">
-        <div class="sec-ico ico-tweaks">⚡</div>
-        <div><div class="sec-label">Section 03</div><div class="sec-name sn-tweaks">Arox Tweaks</div></div>
-      </div>
-      <span class="count-pill" id="cnt-tweaks">0 Items</span>
-    </div>
-    <div class="tw-banner">
-      <div class="tw-ico">⚡</div>
-      <div><div class="tw-title">Arox Tweaks — Premium Performance</div><div class="tw-sub">Exclusive Windows &amp; Minecraft optimization tweaks. Boost FPS, reduce input lag. Available via Discord only.</div></div>
-      <div class="tw-badge">Premium Only</div>
-    </div>
-    <div class="grid" id="grid-tweaks"></div>
+    <div class="tab-hd"><div class="tab-hd-l"><div class="tab-ico ico-tweaks">⚡</div><div><div class="tab-lbl">Section 03</div><div class="tab-nm nm-tweaks">Arox Tweaks</div></div></div><span class="cnt-pill" id="cnt-tweaks">— Items</span></div>
+    <div class="tw-banner"><div class="tw-ico">⚡</div><div><div class="tw-title">Premium Performance Tweaks</div><div class="tw-sub">Exclusive Windows &amp; Minecraft tweaks. Boost FPS, reduce input lag. Via Discord only.</div></div><div class="tw-badge">Premium Only</div></div>
+    <div class="grid" id="grid-tweaks"><div class="loading">CONNECTING TO FIREBASE</div></div>
   </div>
 </div>
 
-<!-- ══ REVIEWS ══ -->
+<!-- REVIEWS -->
 <div id="page-reviews" class="page">
   <div class="tab-wrap">
-    <div class="sec-row">
-      <div class="sec-head-left">
-        <div class="sec-ico" style="background:#0e0800;border:1px solid #f59e0b20">⭐</div>
-        <div><div class="sec-label">Community</div><div class="sec-name" style="color:var(--gold2)">Reviews</div></div>
+    <div class="tab-hd"><div class="tab-hd-l"><div class="tab-ico" style="background:#0e0a00;border:1px solid #f59e0b20">⭐</div><div><div class="tab-lbl">Community</div><div class="tab-nm" style="color:var(--gold3)">Reviews</div></div></div><span class="cnt-pill" id="cnt-reviews">— Reviews</span></div>
+    <div class="rev-form">
+      <div style="font-size:15px;font-weight:700;margin-bottom:18px;">Leave a Review</div>
+      <div style="display:flex;gap:7px;margin-bottom:16px;">
+        <span class="rstar" onclick="setStar(1)">⭐</span><span class="rstar" onclick="setStar(2)">⭐</span><span class="rstar" onclick="setStar(3)">⭐</span><span class="rstar" onclick="setStar(4)">⭐</span><span class="rstar" onclick="setStar(5)">⭐</span>
       </div>
-      <span class="count-pill" id="cnt-reviews">0 Reviews</span>
-    </div>
-    <div style="background:var(--s1);border:1px solid var(--b2);border-radius:16px;padding:26px;margin-bottom:22px;">
-      <div style="font-size:14px;font-weight:700;margin-bottom:16px;">Leave a Review</div>
-      <div style="display:flex;gap:6px;margin-bottom:14px;" id="star-row">
-        <span class="rstar" onclick="setStar(1)" style="font-size:26px;cursor:pointer;filter:grayscale(1) opacity(.25);transition:filter .15s">⭐</span>
-        <span class="rstar" onclick="setStar(2)" style="font-size:26px;cursor:pointer;filter:grayscale(1) opacity(.25);transition:filter .15s">⭐</span>
-        <span class="rstar" onclick="setStar(3)" style="font-size:26px;cursor:pointer;filter:grayscale(1) opacity(.25);transition:filter .15s">⭐</span>
-        <span class="rstar" onclick="setStar(4)" style="font-size:26px;cursor:pointer;filter:grayscale(1) opacity(.25);transition:filter .15s">⭐</span>
-        <span class="rstar" onclick="setStar(5)" style="font-size:26px;cursor:pointer;filter:grayscale(1) opacity(.25);transition:filter .15s">⭐</span>
-      </div>
-      <div class="fg2" style="margin-bottom:12px">
+      <div class="fg2" style="margin-bottom:14px">
         <div><label class="lbl">Your Name *</label><input type="text" id="rv-name" class="inp" placeholder="e.g. Steve123" style="margin-bottom:0"></div>
         <div><label class="lbl">Pack Name (optional)</label><input type="text" id="rv-pack" class="inp" placeholder="e.g. Arox PvP v3" style="margin-bottom:0"></div>
       </div>
       <label class="lbl">Review *</label>
-      <textarea id="rv-text" class="inp" placeholder="Write your experience..." style="margin-bottom:14px"></textarea>
-      <button class="btn btn-ok" style="padding:11px 26px;border-radius:9px;font-size:12px" onclick="submitReview()">Submit Review →</button>
+      <textarea id="rv-text" class="inp" placeholder="Write your experience..." style="margin-bottom:16px"></textarea>
+      <button class="btn btn-ok" style="padding:12px 28px;border-radius:9px;font-size:12px" onclick="submitReview()">Submit Review →</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px" id="rev-grid"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px" id="rev-grid"><div class="loading">LOADING REVIEWS</div></div>
   </div>
 </div>
 
+<!-- FAQ PAGE -->
+<div id="page-faq" class="page">
+  <div class="tab-wrap">
+    <div class="tab-hd"><div class="tab-hd-l"><div class="tab-ico" style="background:#0a0a14;border:1px solid #8b5cf220">❓</div><div><div class="tab-lbl">Help</div><div class="tab-nm nm-paid">FAQ</div></div></div></div>
+    <div class="faq-grid" id="faq-extra">
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">Is it safe to use these texture packs?</span><div class="faq-icon">+</div></div><div class="faq-a">100% safe. Arox packs are plain Minecraft resource packs — they only change visuals. No mods, no executables, nothing that can get you banned. Works on all vanilla-compatible clients.<div style="margin-top:12px"><button class="faq-cta faq-cta-green" onclick="event.stopPropagation();switchTab('free')">🟢 Browse Free Packs →</button></div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">How do I get a paid pack?</span><div class="faq-icon">+</div></div><div class="faq-a">Paid packs are delivered via Discord. Open a ticket, pay, and receive your pack within minutes.<div style="margin-top:12px"><a class="faq-cta" href="https://discord.gg/yPkMphv2PC" target="_blank" onclick="event.stopPropagation()">Discord →</a></div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">What Minecraft versions are supported?</span><div class="faq-icon">+</div></div><div class="faq-a">All packs support 1.8 through the latest version. Each pack page shows the exact range.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">Will this improve my FPS?</span><div class="faq-icon">+</div></div><div class="faq-a">Yes! 16x packs give big FPS boosts. Check Arox Tweaks for extra performance.<div style="margin-top:12px"><button class="faq-cta faq-cta-gold" onclick="event.stopPropagation();switchTab('tweaks')">⚡ View Tweaks →</button></div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">Are the free packs actually free?</span><div class="faq-icon">+</div></div><div class="faq-a">Yes — 100% free. Download them directly here. No email required, no hidden fees.<div style="margin-top:12px"><button class="faq-cta faq-cta-green" onclick="event.stopPropagation();switchTab('free')">🟢 Get Free Packs →</button></div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">Can I use packs on servers?</span><div class="faq-icon">+</div></div><div class="faq-a">Yes, resource packs are allowed on all servers. They run client-side only and do not interact with the server in any way.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">How do I install a texture pack?</span><div class="faq-icon">+</div></div><div class="faq-a">Download the .zip file → Open Minecraft → Options → Resource Packs → Open Pack Folder → Drop the .zip in → Activate it in-game. Done!</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><span class="faq-q-txt">Ready to get started?</span><div class="faq-icon">+</div></div><div class="faq-a">Jump in! Browse free packs, check out premium options, or join Discord for help.<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;"><button class="faq-cta faq-cta-green" onclick="event.stopPropagation();switchTab('free')">🟢 Free</button><button class="faq-cta" onclick="event.stopPropagation();switchTab('paid')">🔮 Paid</button><button class="faq-cta faq-cta-gold" onclick="event.stopPropagation();switchTab('tweaks')">⚡ Tweaks</button></div></div></div>
+    </div>
+  </div>
+</div>
 
-<!-- ══ LOGIN ══ -->
+<!-- LEGAL -->
+<div id="page-tos" class="page"><div class="legal-wrap"><div class="sec-tag" style="margin-bottom:12px">📄 Legal</div><h2>Terms of Service</h2><div class="legal-date">Last updated: January 2026</div><div class="legal-sec"><h3>1. Acceptance</h3><p>By purchasing or downloading any product from Arox Pack Hub, you agree to these Terms of Service.</p></div><div class="legal-sec"><h3>2. Digital Products</h3><p>All products sold are digital goods. Once delivered, no refunds unless the product is faulty or not as described.</p></div><div class="legal-sec"><h3>3. Usage Rights</h3><p>Personal use only. Redistribution, reselling, or claiming ownership is strictly prohibited.</p></div><div class="legal-sec"><h3>4. Payments</h3><p>All payments processed via Discord.</p></div></div></div>
+<div id="page-privacy" class="page"><div class="legal-wrap"><div class="sec-tag" style="margin-bottom:12px">🔒 Legal</div><h2>Privacy Policy</h2><div class="legal-date">Last updated: January 2026</div><div class="legal-sec"><h3>1. Data</h3><p>We do not collect personal data. Data is stored in Firebase and synchronized globally.</p></div><div class="legal-sec"><h3>2. Firebase</h3><p>This website uses Google Firebase. Firebase's Privacy Policy applies.</p></div><div class="legal-sec"><h3>3. Contact</h3><p>Questions? Contact us via Discord at discord.gg/yPkMphv2PC.</p></div></div></div>
+<div id="page-refund" class="page"><div class="legal-wrap"><div class="sec-tag" style="margin-bottom:12px">💰 Legal</div><h2>Refund Policy</h2><div class="legal-date">Last updated: January 2026</div><div class="legal-sec"><h3>1. Digital Goods</h3><p>All sales are generally final once the product is delivered.</p></div><div class="legal-sec"><h3>2. Exceptions</h3><p>Refunds if: not delivered within 24h, doesn't match description, or technical issues prevent use.</p></div><div class="legal-sec"><h3>3. How to Request</h3><p>Open a ticket in Discord within 48 hours of purchase.</p></div></div></div>
+
+<!-- LOGIN -->
 <div id="page-login" class="page">
   <div class="login-box">
     <h2>Admin Login</h2>
-    <p>Enter your password to manage packs.</p>
+    <p>Enter your password to manage packs.<br><small style="color:var(--gr2);font-size:11px">Changes sync globally via Firebase.</small></p>
     <label class="lbl">Password</label>
     <input type="password" id="pw" class="inp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="btn btn-ok" style="width:100%;padding:13px;font-size:13px;border-radius:10px;margin-top:2px;" onclick="doLogin()">Login →</button>
+    <button class="btn btn-ok" style="width:100%;padding:14px;font-size:13px;border-radius:10px;margin-top:2px;" onclick="doLogin()">Login →</button>
     <div class="err-msg" id="pw-err">Wrong password.</div>
   </div>
 </div>
 
-<!-- ══ ADMIN ══ -->
+<!-- ADMIN -->
 <div id="page-admin" class="page">
   <div class="admin-wrap">
     <div class="admin-top">
-      <div><h2>Admin Panel</h2><p style="font-size:13px;color:var(--gr);margin-top:4px;">Upload and manage your packs &amp; tweaks.</p></div>
-      <button class="logout-btn" onclick="doLogout()">Logout</button>
+      <div><h2>Admin Panel <span class="sync-badge"><span class="sdot"></span>Firebase Live</span></h2><p>Changes appear worldwide instantly via Firebase.</p></div>
+      <button class="logout-btn" onclick="doLogout()">LOGOUT</button>
     </div>
-
+    <div style="background:#0a1a0a;border:1px solid #10b98130;border-radius:12px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:var(--ok2);font-family:'DM Mono',monospace;line-height:1.7">
+      ✅ <strong>Kein Storage nötig</strong> — Dateien werden direkt in Firebase gespeichert und sind weltweit verfügbar.<br>
+      ⚠️ Max. Dateigröße: ~9MB pro Pack (Firebase Free Limit). Thumbnail max. ~1MB empfohlen.
+    </div>
     <div class="acard">
       <div class="acard-title">Upload New Item</div>
-      <div class="fg2" style="margin-bottom:12px">
+      <div class="fg2" style="margin-bottom:14px">
         <div><label class="lbl">Name *</label><input type="text" id="u-name" class="inp" placeholder="e.g. Arox PvP v3" style="margin-bottom:0"></div>
-        <div><label class="lbl">Category</label>
-          <select id="u-cat" class="sel" onchange="toggleCatFields()">
-            <option value="pack-free">Pack — Free</option>
-            <option value="pack-paid">Pack — Paid</option>
-            <option value="tweak">Arox Tweaks</option>
-          </select>
-        </div>
+        <div><label class="lbl">Category</label><select id="u-cat" class="sel" onchange="toggleCat()"><option value="pack-free">Pack — Free</option><option value="pack-paid">Pack — Paid</option><option value="tweak">Arox Tweaks</option></select></div>
       </div>
-      <div class="fg2" style="margin-bottom:12px" id="pack-fields">
-        <div><label class="lbl">Type</label>
-          <select id="u-type" class="sel"><option value="PvP">PvP</option><option value="Crystal PvP">Crystal PvP (CPvP)</option></select>
-        </div>
-        <div><label class="lbl">Resolution</label>
-          <select id="u-res" class="sel"><option>16x</option><option>32x</option><option>64x</option><option>128x</option></select>
-        </div>
+      <div class="fg2" style="margin-bottom:14px" id="pack-fields">
+        <div><label class="lbl">Type</label><select id="u-type" class="sel"><option value="PvP">PvP</option><option value="Crystal PvP">Crystal PvP (CPvP)</option></select></div>
+        <div><label class="lbl">Resolution</label><select id="u-res" class="sel"><option>16x</option><option>32x</option><option>64x</option><option>128x</option></select></div>
       </div>
-      <div class="fg2" style="margin-bottom:12px">
-        <div><label class="lbl">Version / Compatibility</label><input type="text" id="u-ver" class="inp" placeholder="e.g. 1.8 – 1.21" style="margin-bottom:0"></div>
+      <div class="fg2" style="margin-bottom:14px">
+        <div><label class="lbl">Version</label><input type="text" id="u-ver" class="inp" placeholder="e.g. 1.8 – 1.21" style="margin-bottom:0"></div>
         <div><label class="lbl">Price (empty = free)</label><input type="text" id="u-price" class="inp" placeholder="e.g. 4.99 €" style="margin-bottom:0"></div>
       </div>
-      <div style="margin-bottom:12px"><label class="lbl">Description</label><textarea id="u-desc" class="inp" placeholder="Short description..."></textarea></div>
-      <div class="fg2" style="margin-bottom:20px">
-        <div>
-          <label class="lbl">Thumbnail</label>
-          <div class="dz" id="dz-t" onclick="document.getElementById('fi-t').click()" ondrop="doDrop(event,'t')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')">
-            <div class="dz-ico">🖼️</div><div class="dz-t">Drop or click</div><div class="dz-h">PNG / JPG</div><div class="dz-ok" id="ok-t"></div>
-          </div>
-          <input type="file" id="fi-t" accept="image/*" style="display:none" onchange="handleFile(this,'t')">
-        </div>
-        <div id="zip-field">
-          <label class="lbl">Pack File (.zip) *</label>
-          <div class="dz" id="dz-p" onclick="document.getElementById('fi-p').click()" ondrop="doDrop(event,'p')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')">
-            <div class="dz-ico">📦</div><div class="dz-t">Drop or click</div><div class="dz-h">.zip only</div><div class="dz-ok" id="ok-p"></div>
-          </div>
-          <input type="file" id="fi-p" accept=".zip" style="display:none" onchange="handleFile(this,'p')">
-        </div>
+      <div style="margin-bottom:14px"><label class="lbl">Description</label><textarea id="u-desc" class="inp" placeholder="Short description..."></textarea></div>
+      <div class="fg2" style="margin-bottom:22px">
+        <div><label class="lbl">Thumbnail (optional)</label><div class="dz" id="dz-t" onclick="document.getElementById('fi-t').click()" ondrop="doDrop(event,'t')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')"><div class="dz-ico">🖼️</div><div class="dz-t">Drop or click</div><div class="dz-h">PNG / JPG</div><div class="dz-ok" id="ok-t"></div></div><input type="file" id="fi-t" accept="image/*" style="display:none" onchange="handleFile(this,'t')"></div>
+        <div id="zip-field"><label class="lbl">Pack File (.zip)</label><div class="dz" id="dz-p" onclick="document.getElementById('fi-p').click()" ondrop="doDrop(event,'p')" ondragover="event.preventDefault();this.classList.add('ov')" ondragleave="this.classList.remove('ov')"><div class="dz-ico">📦</div><div class="dz-t">Drop or click</div><div class="dz-h">.zip only</div><div class="dz-ok" id="ok-p"></div></div><input type="file" id="fi-p" accept=".zip" style="display:none" onchange="handleFile(this,'p')"></div>
       </div>
-      <button class="btn btn-ok" style="width:100%;padding:13px;font-size:13px;border-radius:10px;" onclick="uploadItem()">Publish →</button>
+      <button class="btn btn-ok" style="width:100%;padding:14px;font-size:13px;border-radius:10px;" onclick="uploadItem()">Publish Worldwide →</button>
     </div>
-
-    <div class="acard">
-      <div class="acard-title">All Items — <span id="admin-count">0</span></div>
-      <div id="admin-list"></div>
-    </div>
+    <div class="acard"><div class="acard-title">All Items — <span id="admin-count">0</span></div><div id="admin-list"><div class="loading">LOADING</div></div></div>
   </div>
 </div>
 
 <!-- MODAL -->
-<div class="overlay" id="overlay" onclick="maybeCloseModal(event)">
-  <div class="modal" id="modal-box">
-    <div class="modal-h">
-      <div class="modal-title" id="m-name"></div>
-      <button class="modal-x" onclick="closeModal()">✕</button>
-    </div>
+<div class="overlay" id="overlay" onclick="maybeClose(event)">
+  <div class="modal">
+    <div class="modal-h"><div class="modal-title" id="m-name"></div><button class="modal-x" onclick="closeModal()">✕</button></div>
     <div class="modal-b">
-      <div class="modal-top">
-        <div class="modal-img" id="m-img"></div>
-        <div><div class="modal-desc" id="m-desc"></div><div class="modal-price" id="m-price"></div></div>
-      </div>
-      <div class="ig">
-        <div class="ib"><div class="ib-l">Type</div><div class="ib-v" id="m-type"></div></div>
-        <div class="ib"><div class="ib-l">Resolution</div><div class="ib-v" id="m-res"></div></div>
-        <div class="ib"><div class="ib-l">Version</div><div class="ib-v" id="m-ver"></div></div>
-        <div class="ib"><div class="ib-l">Author</div><div class="ib-v">Arox</div></div>
-      </div>
+      <div class="modal-top"><div class="modal-img" id="m-img"></div><div><div class="modal-desc" id="m-desc"></div><div class="modal-price" id="m-price"></div></div></div>
+      <div class="ig"><div class="ib"><div class="ib-l">Type</div><div class="ib-v" id="m-type"></div></div><div class="ib"><div class="ib-l">Resolution</div><div class="ib-v" id="m-res"></div></div><div class="ib"><div class="ib-l">Version</div><div class="ib-v" id="m-ver"></div></div><div class="ib"><div class="ib-l">Author</div><div class="ib-v">Arox</div></div></div>
       <div class="modal-acts" id="m-acts"></div>
     </div>
   </div>
 </div>
-
 <div class="toasts" id="toasts"></div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="ft-brand">
-      <div class="ft-logo">Arox <span>Pack Hub</span></div>
-      <div class="ft-sub">Premium PvP &amp; CPvP Texture Packs</div>
-    </div>
-    <div class="ft-copy">
-      <div class="ft-copy-main">© 2026 Arox Pack Hub · All Rights Reserved</div>
-      <div class="ft-copy-sub">No redistribution without permission</div>
-    </div>
-    <a class="ft-dc" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener">
-      <svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>
-      Discord
-    </a>
+  <div class="ft-top">
+    <div><div class="ft-brand">Arox <span>Pack Hub</span></div><div class="ft-desc">High quality PvP packs with fair, honest prices. Powered by Firebase — live worldwide.</div></div>
+    <div><div class="ft-col-h">Navigation</div><div class="ft-links"><span class="ft-link" onclick="switchTab('home')">Home</span><span class="ft-link" onclick="switchTab('free')">Free Packs</span><span class="ft-link" onclick="switchTab('paid')">Paid Packs</span><span class="ft-link" onclick="switchTab('tweaks')">Tweaks</span><span class="ft-link" onclick="switchTab('reviews')">Reviews</span><span class="ft-link" onclick="switchTab('faq')">FAQ</span></div></div>
+    <div><div class="ft-col-h">Legal</div><div class="ft-links"><span class="ft-link" onclick="switchTab('tos')">Terms of Service</span><span class="ft-link" onclick="switchTab('privacy')">Privacy Policy</span><span class="ft-link" onclick="switchTab('refund')">Refund Policy</span></div></div>
+    <div><div class="ft-col-h">Socials</div><a class="ft-dc" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener"><svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>Discord</a></div>
   </div>
+  <div class="ft-bot"><div class="ft-copy">Arox Pack Hub © 2026</div><div class="ft-copy">No redistribution without permission</div></div>
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
+// ══ FIREBASE CONFIG ══
+firebase.initializeApp({
+  apiKey: "AIzaSyD0G5PNjd6j_ZQU4I_HMNrcZTDSUzv4SWY",
+  authDomain: "aroxpackhub-cdd9c.firebaseapp.com",
+  databaseURL: "https://aroxpackhub-cdd9c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "aroxpackhub-cdd9c",
+  storageBucket: "aroxpackhub-cdd9c.firebasestorage.app",
+  messagingSenderId: "197032987589",
+  appId: "1:197032987589:web:fe6d209a6fab3c778e59ac"
+});
+const db = firebase.database();
+
+// ══ CONSTANTS ══
 const PW = 'Arox2025';
 const DC = 'https://discord.gg/yPkMphv2PC';
 const DC_SVG = '<svg width="12" height="10" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>';
 
-let logged = false;
-let items = [];
-let thumbData = null, packData = null, packFileName = '';
-let dlCount = 0;
+// ══ STATE ══
+var logged = false, items = [], reviews = [], revStar = 0;
+var thumbData = null, packData = null, packFileName = '';
+var activeTab = 'home';
 
-// ── LOAD DATA ──
-function loadData() {
-  try { items = JSON.parse(localStorage.getItem('arox_items') || '[]'); } catch(e) { items = []; }
-  try { dlCount = parseInt(localStorage.getItem('arox_dl') || '0'); } catch(e) { dlCount = 0; }
-  // migrate old keys
-  try {
-    const old = JSON.parse(localStorage.getItem('arox_packs') || '[]');
-    if (old.length && !items.length) {
-      items = old.map(p => ({...p, cat: p.isFree ? 'pack-free' : 'pack-paid'}));
-      saveData();
+// ══ CANVAS 3D BACKGROUND ══
+(function(){
+  const cv = document.getElementById('bgc');
+  const cx = cv.getContext('2d');
+  let W, H, objs = [];
+  function resize(){
+    W = cv.width = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+  function mkObj(){
+    const t = ['sphere','ring','cube','blob','diamond'][Math.floor(Math.random()*5)];
+    return {
+      t, x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+      sz:22+Math.random()*90, rot:Math.random()*Math.PI*2,
+      vr:(Math.random()-.5)*.012,
+      al:.05+Math.random()*.11,
+      hue:[260,270,280,220,250][Math.floor(Math.random()*5)]
+    };
+  }
+  function draw(o){
+    cx.save(); cx.translate(o.x,o.y); cx.rotate(o.rot); cx.globalAlpha=o.al;
+    const c=`hsl(${o.hue},65%,68%)`;
+    if(o.t==='sphere'){
+      const g=cx.createRadialGradient(0,0,0,0,0,o.sz);
+      g.addColorStop(0,c); g.addColorStop(1,'transparent');
+      cx.fillStyle=g; cx.beginPath(); cx.arc(0,0,o.sz,0,Math.PI*2); cx.fill();
+    } else if(o.t==='ring'){
+      cx.strokeStyle=c; cx.lineWidth=1.5;
+      cx.beginPath(); cx.arc(0,0,o.sz,0,Math.PI*2); cx.stroke();
+      cx.lineWidth=1; cx.beginPath(); cx.arc(0,0,o.sz*.6,0,Math.PI*2); cx.stroke();
+    } else if(o.t==='cube'){
+      const s=o.sz*.55;
+      cx.strokeStyle=c; cx.lineWidth=1;
+      cx.strokeRect(-s/2,-s/2,s,s);
+      cx.strokeRect(-s/2+7,-s/2+7,s,s);
+      cx.beginPath();
+      [[-s/2,-s/2,-s/2+7,-s/2+7],[s/2,-s/2,s/2+7,-s/2+7],[s/2,s/2,s/2+7,s/2+7],[-s/2,s/2,-s/2+7,s/2+7]]
+        .forEach(function(p){cx.moveTo(p[0],p[1]);cx.lineTo(p[2],p[3]);});
+      cx.stroke();
+    } else if(o.t==='blob'){
+      cx.strokeStyle=c; cx.lineWidth=1; cx.beginPath();
+      for(let a=0;a<Math.PI*2;a+=.18){
+        const r=o.sz*(.75+.25*Math.sin(a*4+o.rot));
+        a<.01?cx.moveTo(Math.cos(a)*r,Math.sin(a)*r):cx.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+      }
+      cx.closePath(); cx.stroke();
+    } else {
+      // diamond
+      cx.strokeStyle=c; cx.lineWidth=1.2; cx.beginPath();
+      cx.moveTo(0,-o.sz); cx.lineTo(o.sz*.6,0); cx.lineTo(0,o.sz);
+      cx.lineTo(-o.sz*.6,0); cx.closePath(); cx.stroke();
+      cx.lineWidth=.6;
+      cx.beginPath(); cx.moveTo(0,-o.sz); cx.lineTo(0,o.sz); cx.stroke();
+      cx.beginPath(); cx.moveTo(-o.sz*.6,0); cx.lineTo(o.sz*.6,0); cx.stroke();
     }
-  } catch(e) {}
-  updateDlCounter();
-}
-
-function saveData() {
-  try { localStorage.setItem('arox_items', JSON.stringify(items)); } catch(e) { toast('err','Storage full!'); }
-}
-
-function updateDlCounter() {
-  const el = document.getElementById('dl-count');
-  if (el) el.textContent = dlCount;
-}
-
-// ── TAB SWITCHING ──
-function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  window.scrollTo({top: 0, behavior: 'instant'});
-
-  // highlight nav
-  const map = { free: ['nl-free','on-free'], paid: ['nl-paid','on'], tweaks: ['nl-tweaks','on-gold'], reviews: ['nl-reviews','on-gold'], admin: ['nl-admin','on'], login: ['nl-admin','on'] };
-  ['nl-free','nl-paid','nl-tweaks','nl-reviews','nl-admin'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('on','on-free','on-gold');
-  });
-  const m = map[tab];
-  if (m) {
-    const el = document.getElementById(m[0]);
-    if (el) el.classList.add(m[1]);
+    cx.restore();
   }
-
-  if (tab === 'free')   renderTab('free');
-  if (tab === 'paid')   renderTab('paid');
-  if (tab === 'tweaks') renderTab('tweaks');
-  if (tab === 'reviews') renderReviews();
-  if (tab === 'admin')  renderAdminList();
-}
-
-function goAdmin() {
-  if (logged) switchTab('admin');
-  else { switchTab('login'); setTimeout(() => document.getElementById('pw').focus(), 80); }
-}
-function doLogout() { logged = false; switchTab('home'); toast('ok','Logged out.'); }
-
-// ── AUTH ──
-function doLogin() {
-  const v = document.getElementById('pw').value;
-  if (v === PW) {
-    logged = true;
-    document.getElementById('pw').value = '';
-    document.getElementById('pw-err').style.display = 'none';
-    switchTab('admin');
-    toast('ok','✓ Logged in');
-  } else {
-    document.getElementById('pw-err').style.display = 'block';
-    document.getElementById('pw').value = '';
+  function loop(){
+    cx.clearRect(0,0,W,H);
+    objs.forEach(o=>{
+      o.x+=o.vx; o.y+=o.vy; o.rot+=o.vr;
+      if(o.x<-150)o.x=W+150; if(o.x>W+150)o.x=-150;
+      if(o.y<-150)o.y=H+150; if(o.y>H+150)o.y=-150;
+      draw(o);
+    });
+    requestAnimationFrame(loop);
   }
+  function init(){ objs=[]; for(let i=0;i<30;i++) objs.push(mkObj()); }
+  resize(); init(); loop();
+  window.addEventListener('resize',()=>{resize(); init();});
+})();
+
+// ══ FIREBASE LISTENERS ══
+db.ref('items').on('value', snap => {
+  items = [];
+  snap.forEach(c => items.unshift({...c.val(), fbKey: c.key}));
+  updateStats();
+  if(activeTab==='free') renderTab('free');
+  if(activeTab==='paid') renderTab('paid');
+  if(activeTab==='tweaks') renderTab('tweaks');
+  if(activeTab==='admin' && logged) renderAdminList();
+});
+
+db.ref('reviews').on('value', snap => {
+  reviews = [];
+  snap.forEach(c => reviews.unshift({...c.val(), fbKey: c.key}));
+  updateStats();
+  if(activeTab==='reviews') renderReviews();
+  const el=document.getElementById('cnt-reviews');
+  if(el) el.textContent=reviews.length+' Review'+(reviews.length!==1?'s':'');
+});
+
+function updateStats(){
+  document.getElementById('cnt-h-free').textContent = items.filter(x=>x.cat==='pack-free').length;
+  document.getElementById('cnt-h-paid').textContent = items.filter(x=>x.cat==='pack-paid').length;
+  document.getElementById('cnt-h-tweaks').textContent = items.filter(x=>x.cat==='tweak').length;
+  const el = document.getElementById('h-avg');
+  if(reviews.length){ el.textContent=(reviews.reduce((s,r)=>s+r.stars,0)/reviews.length).toFixed(1)+' ★'; }
+  else el.textContent='—';
 }
 
-// ── ADMIN FORM ──
-function toggleCatFields() {
-  const isTweak = document.getElementById('u-cat').value === 'tweak';
-  document.getElementById('pack-fields').style.display = isTweak ? 'none' : 'grid';
-  document.getElementById('zip-field').style.display = isTweak ? 'none' : 'block';
+// ══ NAV ══
+function toggleMob(){ document.getElementById('mob-menu').classList.toggle('open'); }
+function closeMob(){ document.getElementById('mob-menu').classList.remove('open'); }
+
+function switchTab(tab){
+  activeTab = tab;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg = document.getElementById('page-'+tab);
+  if(pg) pg.classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  closeMob();
+  const map={free:['nl-free','on-free'],paid:['nl-paid','on'],tweaks:['nl-tweaks','on-gold'],reviews:['nl-reviews','on-gold'],faq:['nl-faq','on'],admin:['nl-admin','on'],login:['nl-admin','on']};
+  ['nl-free','nl-paid','nl-tweaks','nl-reviews','nl-faq','nl-admin'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on','on-free','on-gold');});
+  const m=map[tab]; if(m){const el=document.getElementById(m[0]);if(el)el.classList.add(m[1]);}
+  if(tab==='free')    renderTab('free');
+  if(tab==='paid')    renderTab('paid');
+  if(tab==='tweaks')  renderTab('tweaks');
+  if(tab==='reviews') renderReviews();
+  if(tab==='admin')   renderAdminList();
+}
+function goAdmin(){ if(logged)switchTab('admin'); else{switchTab('login');setTimeout(()=>document.getElementById('pw').focus(),80);} }
+function doLogout(){ logged=false; switchTab('home'); toast('ok','Logged out.'); }
+
+// ══ AUTH ══
+function doLogin(){
+  const v=document.getElementById('pw').value;
+  if(v===PW){ logged=true; document.getElementById('pw').value=''; document.getElementById('pw-err').style.display='none'; switchTab('admin'); toast('ok','✓ Logged in'); }
+  else{ document.getElementById('pw-err').style.display='block'; document.getElementById('pw').value=''; }
 }
 
-function handleFile(input, type) {
-  const f = input.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = e => {
-    if (type === 't') { thumbData = e.target.result; document.getElementById('ok-t').textContent = '✓ ' + f.name; }
-    else { packData = e.target.result; packFileName = f.name; document.getElementById('ok-p').textContent = '✓ ' + f.name; }
+// ══ ADMIN FORM ══
+function toggleCat(){
+  const tw=document.getElementById('u-cat').value==='tweak';
+  document.getElementById('pack-fields').style.display=tw?'none':'grid';
+  document.getElementById('zip-field').style.display=tw?'none':'block';
+}
+function handleFile(input,type){
+  const f=input.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    if(type==='t'){thumbData=e.target.result;document.getElementById('ok-t').textContent='✓ '+f.name;}
+    else{packData=e.target.result;packFileName=f.name;document.getElementById('ok-p').textContent='✓ '+f.name;}
   };
   r.readAsDataURL(f);
 }
+function doDrop(e,type){ e.preventDefault(); e.currentTarget.classList.remove('ov'); const f=e.dataTransfer.files[0]; if(f)handleFile({files:[f]},type); }
 
-function doDrop(e, type) {
-  e.preventDefault(); e.currentTarget.classList.remove('ov');
-  const f = e.dataTransfer.files[0]; if (f) handleFile({files:[f]}, type);
-}
-
-function uploadItem() {
-  const name = document.getElementById('u-name').value.trim();
-  const cat  = document.getElementById('u-cat').value;
-  if (!name) { toast('err','Name is required.'); return; }
-  if (cat !== 'tweak' && !packData) { toast('err','Please attach a .zip file.'); return; }
-
-  const priceVal = document.getElementById('u-price').value.trim();
-  const item = {
-    id: Date.now(),
-    name,
-    cat,
-    desc: document.getElementById('u-desc').value.trim() || 'No description.',
-    res:  cat !== 'tweak' ? document.getElementById('u-res').value : '—',
-    type: cat !== 'tweak' ? document.getElementById('u-type').value : 'Tweak',
-    ver:  document.getElementById('u-ver').value.trim() || '—',
-    price: priceVal || 'FREE',
-    isFree: !priceVal,
-    thumb: thumbData,
-    file:  packData,
-    fileName: packFileName,
+function uploadItem(){
+  const name=document.getElementById('u-name').value.trim();
+  if(!name){toast('err','Name is required.');return;}
+  const cat=document.getElementById('u-cat').value;
+  if(cat!=='tweak'&&!packData){toast('err','Please attach a .zip file.');return;}
+  const priceVal=document.getElementById('u-price').value.trim();
+  const item={
+    name, cat,
+    desc: document.getElementById('u-desc').value.trim()||'No description.',
+    res:  cat!=='tweak'?document.getElementById('u-res').value:'—',
+    type: cat!=='tweak'?document.getElementById('u-type').value:'Tweak',
+    ver:  document.getElementById('u-ver').value.trim()||'—',
+    price: priceVal||'FREE', isFree: !priceVal,
+    thumb: thumbData||null,
+    file:  packData||null,
+    fileName: packFileName||'',
+    createdAt: Date.now()
   };
-  items.unshift(item);
-  saveData();
-  resetForm();
-  renderAdminList();
-  toast('ok', '✓ "' + name + '" published!');
+  toast('ok','Uploading... please wait ⏳');
+  db.ref('items').push(item)
+    .then(()=>{ resetForm(); toast('ok','✓ "'+name+'" is now live worldwide! 🌍'); })
+    .catch(e=>{
+      if(e.message&&e.message.includes('413')) toast('err','File too large for Firebase free plan (max ~9MB).');
+      else toast('err','Firebase error: '+e.message);
+    });
 }
 
-function deleteItem(id) {
-  if (!confirm('Delete this item? This cannot be undone.')) return;
-  items = items.filter(x => x.id !== id);
-  saveData();
-  renderAdminList();
-  toast('ok', 'Item deleted.');
+function deleteItem(fbKey){
+  if(!confirm('Delete this item? Removes it for everyone worldwide.'))return;
+  db.ref('items/'+fbKey).remove()
+    .then(()=>toast('ok','Deleted.'))
+    .catch(e=>toast('err','Error: '+e.message));
 }
 
-function resetForm() {
-  ['u-name','u-desc','u-ver','u-price'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('ok-t').textContent = '';
-  document.getElementById('ok-p').textContent = '';
-  document.getElementById('fi-t').value = '';
-  document.getElementById('fi-p').value = '';
-  thumbData = null; packData = null; packFileName = '';
-  document.getElementById('u-cat').value = 'pack-free';
-  document.getElementById('pack-fields').style.display = 'grid';
-  document.getElementById('zip-field').style.display = 'block';
+function resetForm(){
+  ['u-name','u-desc','u-ver','u-price'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ok-t').textContent='';
+  document.getElementById('ok-p').textContent='';
+  document.getElementById('fi-t').value='';
+  document.getElementById('fi-p').value='';
+  thumbData=null; packData=null; packFileName='';
+  document.getElementById('u-cat').value='pack-free';
+  document.getElementById('pack-fields').style.display='grid';
+  document.getElementById('zip-field').style.display='block';
 }
 
-// ── CARD BUILDER ──
-function makeCard(item) {
-  const tw = item.cat === 'tweak';
-  const typeBadge = tw ? 'bt-tw' : (item.type === 'PvP' ? 'bt-pvp' : 'bt-cpvp');
-  const typeLabel = tw ? 'Tweak' : item.type;
-  const priceBadge = tw ? 'bp-gold' : (item.isFree ? 'bp-free' : 'bp-paid');
-  const cardCls = tw ? 'card gc' : 'card';
-  const phCls = tw ? 'card-ph gph' : 'card-ph';
-
-  let actionBtn;
-  if (item.isFree && !tw) {
-    actionBtn = `<button class="btn btn-ok" onclick="event.stopPropagation();doDownload(${item.id})">⬇ Download</button>`;
-  } else {
-    actionBtn = `<a class="btn ${tw ? 'btn-gold' : 'btn-dc'}" href="${DC}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${DC_SVG} ${tw ? 'Get on Discord' : 'Buy — ' + item.price}</a>`;
-  }
-
-  return `<div class="${cardCls}" onclick="openModal(${item.id})">
+// ══ CARDS ══
+function makeCard(item){
+  const tw=item.cat==='tweak';
+  const typeBadge=tw?'bt-tw':(item.type==='PvP'?'bt-pvp':'bt-cpvp');
+  const priceBadge=tw?'bp-gold':(item.isFree?'bp-free':'bp-paid');
+  let actionBtn=item.isFree&&!tw
+    ?`<button class="btn btn-ok" onclick="event.stopPropagation();doDownload('${item.fbKey}')">⬇ Download</button>`
+    :`<a class="btn ${tw?'btn-gold':'btn-dc'}" href="${DC}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${DC_SVG} ${tw?'Get on Discord':'Buy — '+item.price}</a>`;
+  return `<div class="card${tw?' gc':''}" onclick="openModal('${item.fbKey}')">
     <div class="card-img">
-      ${item.thumb ? `<img src="${item.thumb}" alt="${item.name}">` : `<div class="${phCls}">${tw ? '⚡' : 'PVP'}</div>`}
-      <span class="bt ${typeBadge}">${typeLabel}</span>
+      ${item.thumb?`<img src="${item.thumb}" alt="${item.name}">`:`<div class="card-ph${tw?' gp':''}">${tw?'⚡':'PVP'}</div>`}
+      <span class="bt ${typeBadge}">${tw?'Tweak':item.type}</span>
       <span class="bp ${priceBadge}">${item.price}</span>
     </div>
     <div class="card-body">
       <div class="card-name">${item.name}</div>
-      <div class="card-desc">${item.desc.length > 68 ? item.desc.slice(0,68) + '…' : item.desc}</div>
-      <div class="card-metas">
-        ${item.res !== '—' ? `<span class="mt">${item.res}</span>` : ''}
-        ${item.ver !== '—' ? `<span class="mt">${item.ver}</span>` : ''}
-        <span class="mt">${item.type}</span>
+      <div class="card-desc">${item.desc.length>70?item.desc.slice(0,70)+'…':item.desc}</div>
+      <div class="card-tags">
+        ${item.res!=='—'?`<span class="ctag">${item.res}</span>`:''}
+        ${item.ver!=='—'?`<span class="ctag">${item.ver}</span>`:''}
+        <span class="ctag">${item.type}</span>
       </div>
-      <div class="card-acts">${actionBtn}<button class="btn btn-ghost" onclick="event.stopPropagation();openModal(${item.id})">Info</button></div>
+      <div class="card-acts">${actionBtn}<button class="btn btn-ghost" onclick="event.stopPropagation();openModal('${item.fbKey}')">Info</button></div>
     </div>
   </div>`;
 }
+function emptyState(type){ return `<div class="empty"><div class="empty-ico">${type==='tweak'?'⚡':'📦'}</div><div class="empty-h">Nothing here yet</div><div class="empty-t">Upload via Admin to show items here.</div></div>`; }
 
-function emptyState(type) {
-  const ico = type === 'tweak' ? '⚡' : '📦';
-  return `<div class="empty"><div class="empty-ico">${ico}</div><div class="empty-h">Nothing here yet</div><div class="empty-t">Items will appear once uploaded.</div></div>`;
+function renderTab(tab){
+  const catMap={free:'pack-free',paid:'pack-paid',tweaks:'tweak'};
+  const filtered=items.filter(x=>x.cat===catMap[tab]);
+  const unit=tab==='tweaks'?'Item':'Pack';
+  document.getElementById('cnt-'+tab).textContent=filtered.length+' '+unit+(filtered.length!==1?'s':'');
+  document.getElementById('grid-'+tab).innerHTML=filtered.length?filtered.map(makeCard).join(''):emptyState(catMap[tab]);
 }
 
-// ── RENDER TABS ──
-function renderTab(tab) {
-  const catMap = { free: 'pack-free', paid: 'pack-paid', tweaks: 'tweak' };
-  const filtered = items.filter(x => x.cat === catMap[tab]);
-  const unit = tab === 'tweaks' ? 'Item' : 'Pack';
-  document.getElementById('cnt-' + tab).textContent = filtered.length + ' ' + unit + (filtered.length !== 1 ? 's' : '');
-  document.getElementById('grid-' + tab).innerHTML = filtered.length ? filtered.map(makeCard).join('') : emptyState(catMap[tab]);
-}
-
-// ── ADMIN LIST ──
-function renderAdminList() {
-  document.getElementById('admin-count').textContent = items.length + ' Item' + (items.length !== 1 ? 's' : '');
-  const el = document.getElementById('admin-list');
-  if (!items.length) {
-    el.innerHTML = '<div style="text-align:center;padding:28px;color:var(--gr2);font-size:11px;font-family:\'JetBrains Mono\',monospace;">Nothing yet.</div>';
-    return;
-  }
-  const catLabel = { 'pack-free': 'Free Pack', 'pack-paid': 'Paid Pack', 'tweak': 'Tweak' };
-  el.innerHTML = items.map(x => `
+function renderAdminList(){
+  document.getElementById('admin-count').textContent=items.length+' Item'+(items.length!==1?'s':'');
+  const el=document.getElementById('admin-list');
+  if(!items.length){el.innerHTML='<div style="text-align:center;padding:28px;color:var(--gr2);font-size:10px;font-family:\'DM Mono\',monospace;letter-spacing:1px">NO ITEMS YET</div>';return;}
+  const lbl={'pack-free':'Free Pack','pack-paid':'Paid Pack','tweak':'Tweak'};
+  el.innerHTML=items.map(x=>`
     <div class="arow">
-      <div class="arow-th">${x.thumb ? `<img src="${x.thumb}">` : (x.cat === 'tweak' ? '⚡' : '🎨')}</div>
-      <div class="arow-info">
-        <div class="arow-name">${x.name}</div>
-        <div class="arow-meta">${catLabel[x.cat] || x.cat} · ${x.price}</div>
-      </div>
-      <button class="del-btn" onclick="deleteItem(${x.id})" title="Delete">🗑</button>
+      <div class="arow-th">${x.thumb?`<img src="${x.thumb}">`:(x.cat==='tweak'?'⚡':'🎨')}</div>
+      <div class="arow-info"><div class="arow-nm">${x.name}</div><div class="arow-meta">${lbl[x.cat]||x.cat} · ${x.price}</div></div>
+      <button class="del-btn" onclick="deleteItem('${x.fbKey}')" title="Delete">🗑</button>
     </div>`).join('');
 }
 
-// ── DOWNLOAD ──
-function doDownload(id) {
-  const item = items.find(x => x.id === id);
-  if (!item) return;
-  if (!item.file) { toast('err', 'No file attached to this pack.'); return; }
-  try {
-    const a = document.createElement('a');
-    a.href = item.file;
-    a.download = item.fileName || item.name.replace(/\s+/g, '_') + '.zip';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    // count the download
-    dlCount++;
-    localStorage.setItem('arox_dl', dlCount);
-    updateDlCounter();
-    toast('ok', '⬇ Downloading ' + item.name);
-  } catch(e) {
-    toast('err', 'Download failed. Try again.');
-  }
+// ══ DOWNLOAD ══
+function doDownload(fbKey){
+  const item=items.find(x=>x.fbKey===fbKey); if(!item)return;
+  if(!item.file){toast('err','No download file found.');return;}
+  const a=document.createElement('a');
+  a.href=item.file;
+  a.download=item.fileName||item.name.replace(/\s+/g,'_')+'.zip';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast('ok','⬇ Downloading '+item.name);
 }
 
-// ── MODAL ──
-function openModal(id) {
-  const x = items.find(i => i.id === id); if (!x) return;
-  const tw = x.cat === 'tweak';
-  document.getElementById('m-name').textContent = x.name;
-  document.getElementById('m-desc').textContent = x.desc;
-  document.getElementById('m-price').textContent = x.price;
-  document.getElementById('m-price').className = 'modal-price ' + (tw ? 'tw' : (x.isFree ? 'free' : 'paid'));
-  document.getElementById('m-type').textContent = x.type;
-  document.getElementById('m-res').textContent = x.res;
-  document.getElementById('m-ver').textContent = x.ver;
-  document.getElementById('m-img').innerHTML = x.thumb ? `<img src="${x.thumb}">` : (tw ? '⚡' : '🎨');
-
-  let acts;
-  if (x.isFree && !tw) {
-    acts = `<button class="modal-dl" onclick="doDownload(${x.id});closeModal()">⬇ Download Free</button>`;
-  } else {
-    acts = `<a class="${tw ? 'modal-gold' : 'modal-dc'}" href="${DC}" target="_blank" rel="noopener">${DC_SVG} ${tw ? 'Get on Discord — ' + x.price : 'Buy on Discord — ' + x.price}</a>`;
-  }
-  document.getElementById('m-acts').innerHTML = acts;
+// ══ MODAL ══
+function openModal(fbKey){
+  const x=items.find(i=>i.fbKey===fbKey); if(!x)return;
+  const tw=x.cat==='tweak';
+  document.getElementById('m-name').textContent=x.name;
+  document.getElementById('m-desc').textContent=x.desc;
+  document.getElementById('m-price').textContent=x.price;
+  document.getElementById('m-price').className='modal-price '+(tw?'tw':(x.isFree?'free':'paid'));
+  document.getElementById('m-type').textContent=x.type;
+  document.getElementById('m-res').textContent=x.res;
+  document.getElementById('m-ver').textContent=x.ver;
+  document.getElementById('m-img').innerHTML=x.thumb?`<img src="${x.thumb}">`:(tw?'⚡':'🎨');
+  let acts=x.isFree&&!tw
+    ?`<button class="modal-dl" onclick="doDownload('${x.fbKey}');closeModal()">⬇ Download Free</button>`
+    :`<a class="${tw?'modal-gold':'modal-dc'}" href="${DC}" target="_blank" rel="noopener">${DC_SVG} ${tw?'Get on Discord — '+x.price:'Buy on Discord — '+x.price}</a>`;
+  document.getElementById('m-acts').innerHTML=acts;
   document.getElementById('overlay').classList.add('open');
 }
+function maybeClose(e){ if(e.target===document.getElementById('overlay'))closeModal(); }
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
 
-function maybeCloseModal(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
-function closeModal() { document.getElementById('overlay').classList.remove('open'); }
-
-// ── TOAST ──
-function toast(type, msg) {
-  const el = document.createElement('div');
-  el.className = 'toast ' + (type === 'ok' ? 't-ok' : 't-err');
-  el.textContent = msg;
-  document.getElementById('toasts').appendChild(el);
-  setTimeout(() => el.remove(), 3000);
+// ══ TOAST ══
+function toast(type,msg){
+  const el=document.createElement('div'); el.className='toast '+(type==='ok'?'t-ok':'t-err'); el.textContent=msg;
+  document.getElementById('toasts').appendChild(el); setTimeout(()=>el.remove(),3200);
 }
 
+// ══ REVIEWS ══
+function setStar(v){ revStar=v; document.querySelectorAll('.rstar').forEach((s,i)=>{s.style.filter=i<v?'none':'grayscale(1) opacity(.2)';}); }
 
-// ── REVIEWS ──
-let reviews = [];
-let revStar = 0;
+function submitReview(){
+  const name=document.getElementById('rv-name').value.trim();
+  const pack=document.getElementById('rv-pack').value.trim();
+  const text=document.getElementById('rv-text').value.trim();
+  if(!revStar){toast('err','Pick a star rating.');return;}
+  if(!name){toast('err','Enter your name.');return;}
+  if(!text){toast('err','Write a review.');return;}
+  db.ref('reviews').push({stars:revStar,name,packName:pack||null,text,date:new Date().toLocaleDateString('en-GB'),createdAt:Date.now()})
+    .then(()=>{
+      revStar=0; document.querySelectorAll('.rstar').forEach(s=>s.style.filter='grayscale(1) opacity(.2)');
+      ['rv-name','rv-pack','rv-text'].forEach(id=>document.getElementById(id).value='');
+      toast('ok','✓ Review submitted!');
+    })
+    .catch(e=>toast('err','Error: '+e.message));
+}
 
-function loadReviews() {
-  try { reviews = JSON.parse(localStorage.getItem('arox_reviews') || '[]'); } catch(e) { reviews = []; }
-}
-function saveReviews() {
-  try { localStorage.setItem('arox_reviews', JSON.stringify(reviews)); } catch(e) { toast('err','Storage full!'); }
-}
-function setStar(v) {
-  revStar = v;
-  document.querySelectorAll('.rstar').forEach((s,i) => {
-    s.style.filter = i < v ? 'none' : 'grayscale(1) opacity(.25)';
-  });
-}
-function submitReview() {
-  const name = document.getElementById('rv-name').value.trim();
-  const pack = document.getElementById('rv-pack').value.trim();
-  const text = document.getElementById('rv-text').value.trim();
-  if (!revStar) { toast('err','Please pick a star rating.'); return; }
-  if (!name)   { toast('err','Please enter your name.'); return; }
-  if (!text)   { toast('err','Please write a review.'); return; }
-  reviews.unshift({ id: Date.now(), stars: revStar, name, packName: pack || null, text, date: new Date().toLocaleDateString('en-GB') });
-  saveReviews();
-  renderReviews();
-  revStar = 0;
-  document.querySelectorAll('.rstar').forEach(s => s.style.filter = 'grayscale(1) opacity(.25)');
-  ['rv-name','rv-pack','rv-text'].forEach(id => document.getElementById(id).value = '');
-  toast('ok','✓ Review submitted!');
-}
-function renderReviews() {
-  const cnt = document.getElementById('cnt-reviews');
-  if (cnt) cnt.textContent = reviews.length + ' Review' + (reviews.length !== 1 ? 's' : '');
-  const el = document.getElementById('rev-grid');
-  if (!el) return;
-  if (!reviews.length) {
-    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:52px 20px;border:1px dashed var(--b2);border-radius:14px"><div style="font-size:28px;opacity:.1;margin-bottom:10px">⭐</div><div style="font-size:11px;font-weight:600;color:var(--gr2);letter-spacing:1.5px;text-transform:uppercase">No reviews yet</div><div style="font-size:11px;color:var(--gr2);opacity:.5;margin-top:4px">Be the first to leave one!</div></div>';
-    return;
-  }
-  el.innerHTML = reviews.map(r => `
-    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
-        <div style="font-size:13px;font-weight:700">${r.name}</div>
-        <div style="font-size:9px;color:var(--gr2);font-family:'JetBrains Mono',monospace">${r.date}</div>
+function renderReviews(){
+  const el=document.getElementById('rev-grid'); if(!el)return;
+  if(!reviews.length){el.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px 20px;border:1px dashed var(--b2);border-radius:14px"><div style="font-size:30px;opacity:.1;margin-bottom:12px">⭐</div><div style="font-size:10px;font-weight:700;color:var(--gr2);letter-spacing:2px;text-transform:uppercase">No reviews yet</div><div style="font-size:11px;color:var(--gr2);opacity:.4;margin-top:5px">Be the first!</div></div>`;return;}
+  el.innerHTML=reviews.map(r=>`
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px">
+        <div style="font-size:14px;font-weight:700">${r.name}</div>
+        <div style="font-size:8px;color:var(--gr2);font-family:'DM Mono',monospace">${r.date}</div>
       </div>
-      <div style="font-size:14px;margin-bottom:8px">${'⭐'.repeat(r.stars)}</div>
-      <div style="font-size:12px;color:var(--tx2);line-height:1.6">${r.text}</div>
-      ${r.packName ? `<div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gr2);margin-top:8px">Pack: ${r.packName}</div>` : ''}
+      <div style="font-size:15px;margin-bottom:10px">${'⭐'.repeat(r.stars)}</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.65">${r.text}</div>
+      ${r.packName?`<div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--gr2);margin-top:10px">PACK: ${r.packName}</div>`:''}
     </div>`).join('');
 }
 
-// ── INIT ──
-loadData();
-loadReviews();
-switchTab('home');
+// ══ FAQ ══
+function toggleFaq(el){ el.classList.toggle('open'); }
+
+// ══ INIT ══
+// Show home page immediately without waiting for Firebase
+(function(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  var pg = document.getElementById('page-home');
+  if(pg) pg.classList.add('active');
+})();
 </script>
 </body>
 </html>
+
