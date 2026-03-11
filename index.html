@@ -584,7 +584,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var
 <!-- FOOTER -->
 <footer>
   <div class="ft-top">
-    <div><div class="ft-brand">Arox <span>Pack Hub</span></div><div class="ft-desc">High quality PvP packs with fair, honest prices. Powered by Firebase — live worldwide.</div></div>
+    <div><div class="ft-brand">Arox <span>Pack Hub</span></div><div class="ft-desc">High quality PvP packs with fair, honest prices.</div></div>
     <div><div class="ft-col-h">Navigation</div><div class="ft-links"><span class="ft-link" onclick="switchTab('home')">Home</span><span class="ft-link" onclick="switchTab('free')">Free Packs</span><span class="ft-link" onclick="switchTab('paid')">Paid Packs</span><span class="ft-link" onclick="switchTab('tweaks')">Tweaks</span><span class="ft-link" onclick="switchTab('reviews')">Reviews</span><span class="ft-link" onclick="switchTab('faq')">FAQ</span></div></div>
     <div><div class="ft-col-h">Legal</div><div class="ft-links"><span class="ft-link" onclick="switchTab('tos')">Terms of Service</span><span class="ft-link" onclick="switchTab('privacy')">Privacy Policy</span><span class="ft-link" onclick="switchTab('refund')">Refund Policy</span></div></div>
     <div><div class="ft-col-h">Socials</div><a class="ft-dc" href="https://discord.gg/yPkMphv2PC" target="_blank" rel="noopener"><svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.7 58.7 0 0045.8 1a40.5 40.5 0 00-1.8 3.7 54.2 54.2 0 00-16.3 0A39 39 0 0025.9 1 58.5 58.5 0 0011.5 5C1.7 19.5-1 33.7.3 47.7a59 59 0 0018.1 9.2 44.7 44.7 0 003.9-6.3 38.4 38.4 0 01-6.1-2.9l1.5-1.1a42 42 0 0036.3 0l1.5 1.1a38.5 38.5 0 01-6.1 2.9 44.8 44.8 0 003.9 6.3 58.8 58.8 0 0018.1-9.2c1.5-15.6-2.5-29.7-10.3-42.8zM23.7 39.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.5 0 6.4 3.2 6.4 7.2s-2.9 7.2-6.4 7.2z"/></svg>Discord</a></div>
@@ -836,8 +836,11 @@ function resetForm(){
   ['u-name','u-desc','u-ver','u-price'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ok-t').textContent='';
   document.getElementById('ok-p').textContent='';
-  document.getElementById('fi-t').value='';
-  document.getElementById('fi-p').value='';
+  // Browser cached file inputs — einziger Fix ist das Element neu erstellen
+  var ft=document.getElementById('fi-t');
+  var fp=document.getElementById('fi-p');
+  if(ft){var nft=ft.cloneNode();nft.value='';ft.parentNode.replaceChild(nft,ft);nft.onchange=function(){handleFile(this,'t');};}
+  if(fp){var nfp=fp.cloneNode();nfp.value='';fp.parentNode.replaceChild(nfp,fp);nfp.onchange=function(){handleFile(this,'p');};}
   thumbData=null; packData=null; packFileName='';
   document.getElementById('u-cat').value='pack-free';
   document.getElementById('pack-fields').style.display='grid';
