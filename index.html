@@ -596,16 +596,38 @@ footer{position:relative;z-index:2;border-top:1px solid var(--b1);background:var
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
 // ══ FIREBASE CONFIG ══
-firebase.initializeApp({
-  apiKey: "AIzaSyD0G5PNjd6j_ZQU4I_HMNrcZTDSUzv4SWY",
-  authDomain: "aroxpackhub-cdd9c.firebaseapp.com",
-  databaseURL: "https://aroxpackhub-cdd9c-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "aroxpackhub-cdd9c",
-  storageBucket: "aroxpackhub-cdd9c.firebasestorage.app",
-  messagingSenderId: "197032987589",
-  appId: "1:197032987589:web:fe6d209a6fab3c778e59ac"
-});
-const db = firebase.database();
+var db;
+try {
+  firebase.initializeApp({
+    apiKey: "AIzaSyD0G5PNjd6j_ZQU4I_HMNrcZTDSUzv4SWY",
+    authDomain: "aroxpackhub-cdd9c.firebaseapp.com",
+    databaseURL: "https://aroxpackhub-cdd9c-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "aroxpackhub-cdd9c",
+    storageBucket: "aroxpackhub-cdd9c.firebasestorage.app",
+    messagingSenderId: "197032987589",
+    appId: "1:197032987589:web:fe6d209a6fab3c778e59ac"
+  });
+  db = firebase.database();
+} catch(e) {
+  console.warn("Firebase init failed:", e.message);
+  // Fallback: leeres db-Objekt damit keine weiteren Fehler kommen
+  db = {
+    ref: function(path) {
+      return {
+        on: function(evt, cb) { cb({ forEach: function(){} }); },
+        push: function(data) { return Promise.reject(new Error("Firebase nicht verbunden. Bitte auf Vercel deployen!")); },
+        remove: function() { return Promise.reject(new Error("Firebase nicht verbunden.")); }
+      };
+    }
+  };
+  // Zeige Banner
+  setTimeout(function(){
+    var b = document.createElement('div');
+    b.style.cssText = 'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#1a0a00;border:1px solid #f59e0b40;color:#fbbf24;font-size:11px;font-family:monospace;padding:10px 18px;border-radius:8px;z-index:9999;text-align:center;';
+    b.innerHTML = '⚠️ Firebase nicht verbunden — bitte auf <strong>Vercel</strong> deployen für Live-Funktionen.';
+    document.body.appendChild(b);
+  }, 500);
+}
 
 // ══ CONSTANTS ══
 const PW = 'Arox2025';
@@ -711,12 +733,16 @@ db.ref('reviews').on('value', snap => {
 });
 
 function updateStats(){
-  document.getElementById('cnt-h-free').textContent = items.filter(x=>x.cat==='pack-free').length;
-  document.getElementById('cnt-h-paid').textContent = items.filter(x=>x.cat==='pack-paid').length;
-  document.getElementById('cnt-h-tweaks').textContent = items.filter(x=>x.cat==='tweak').length;
+  if(!items) items=[];
+  if(!reviews) reviews=[];
+  const ef = document.getElementById('cnt-h-free');
+  const ep = document.getElementById('cnt-h-paid');
+  const et = document.getElementById('cnt-h-tweaks');
   const el = document.getElementById('h-avg');
-  if(reviews.length){ el.textContent=(reviews.reduce((s,r)=>s+r.stars,0)/reviews.length).toFixed(1)+' ★'; }
-  else el.textContent='—';
+  if(ef) ef.textContent = items.filter(x=>x.cat==='pack-free').length;
+  if(ep) ep.textContent = items.filter(x=>x.cat==='pack-paid').length;
+  if(et) et.textContent = items.filter(x=>x.cat==='tweak').length;
+  if(el){ if(reviews.length){ el.textContent=(reviews.reduce((s,r)=>s+r.stars,0)/reviews.length).toFixed(1)+' ★'; } else el.textContent='—'; }
 }
 
 // ══ NAV ══
@@ -772,6 +798,10 @@ function uploadItem(){
   const cat=document.getElementById('u-cat').value;
   if(cat!=='tweak'&&!packData){toast('err','Please attach a .zip file.');return;}
   const priceVal=document.getElementById('u-price').value.trim();
+  // Snapshot der Daten VOR dem Reset
+  const itemThumb = thumbData;
+  const itemFile = packData;
+  const itemFileName = packFileName;
   const item={
     name, cat,
     desc: document.getElementById('u-desc').value.trim()||'No description.',
@@ -779,11 +809,13 @@ function uploadItem(){
     type: cat!=='tweak'?document.getElementById('u-type').value:'Tweak',
     ver:  document.getElementById('u-ver').value.trim()||'—',
     price: priceVal||'FREE', isFree: !priceVal,
-    thumb: thumbData||null,
-    file:  packData||null,
-    fileName: packFileName||'',
+    thumb: itemThumb||null,
+    file:  itemFile||null,
+    fileName: itemFileName||'',
     createdAt: Date.now()
   };
+  // Sofort State zurücksetzen damit neue Datei geladen werden kann
+  thumbData=null; packData=null; packFileName='';
   toast('ok','Uploading... please wait ⏳');
   db.ref('items').push(item)
     .then(()=>{ resetForm(); toast('ok','✓ "'+name+'" is now live worldwide! 🌍'); })
@@ -909,13 +941,14 @@ function submitReview(){
   if(!revStar){toast('err','Pick a star rating.');return;}
   if(!name){toast('err','Enter your name.');return;}
   if(!text){toast('err','Write a review.');return;}
-  db.ref('reviews').push({stars:revStar,name,packName:pack||null,text,date:new Date().toLocaleDateString('en-GB'),createdAt:Date.now()})
-    .then(()=>{
-      revStar=0; document.querySelectorAll('.rstar').forEach(s=>s.style.filter='grayscale(1) opacity(.2)');
-      ['rv-name','rv-pack','rv-text'].forEach(id=>document.getElementById(id).value='');
-      toast('ok','✓ Review submitted!');
-    })
-    .catch(e=>toast('err','Error: '+e.message));
+  const starSnap=revStar;
+  // Sofort reset damit man direkt wieder schreiben kann
+  revStar=0;
+  document.querySelectorAll('.rstar').forEach(s=>s.style.filter='grayscale(1) opacity(.2)');
+  ['rv-name','rv-pack','rv-text'].forEach(id=>document.getElementById(id).value='');
+  db.ref('reviews').push({stars:starSnap,name,packName:pack||null,text,date:new Date().toLocaleDateString('en-GB'),createdAt:Date.now()})
+    .then(()=>{ toast('ok','✓ Review submitted!'); })
+    .catch(e=>{ toast('err','Error: '+e.message); });
 }
 
 function renderReviews(){
